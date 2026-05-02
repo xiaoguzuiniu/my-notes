@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>记事本</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+            background: #f5f5f5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 顶部工具栏 */
+        .toolbar {
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toolbar button {
+            padding: 6px 12px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .toolbar button:hover {
+            background: #f0f0f0;
+        }
+
+        .toolbar .search-box {
+            margin-left: auto;
+            position: relative;
+        }
+
+        .toolbar .search-box input {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+            width: 200px;
+        }
+
+        .toolbar .search-box input:focus {
+            outline: none;
+            border-color: #999;
+        }
+
+        /* 主内容区 */
+        .main {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* 左侧列表 */
+        .sidebar {
+            width: 240px;
+            background: #fff;
+            border-right: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 分类标签 */
+        .category-tabs {
+            padding: 8px 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .category-tab {
+            padding: 4px 10px;
+            font-size: 12px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            cursor: pointer;
+            background: #fff;
+            color: #666;
+            transition: all 0.2s;
+        }
+
+        .category-tab:hover {
+            background: #f0f0f0;
+        }
+
+        .category-tab.active {
+            background: #333;
+            color: #fff;
+            border-color: #333;
+        }
+
+        .category-tab .count {
+            margin-left: 4px;
+            opacity: 0.7;
+        }
+
+        .notes-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .note-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
+
+        .note-item:hover {
+            background: #f8f8f8;
+        }
+
+        .note-item.active {
+            background: #e8e8e8;
+        }
+
+        .note-item .title {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .note-item .preview {
+            font-size: 12px;
+            color: #999;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .note-item .meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 4px;
+        }
+
+        .note-item .date {
+            font-size: 11px;
+            color: #bbb;
+        }
+
+        .note-item .category-badge {
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 8px;
+            background: #f0f0f0;
+            color: #888;
+        }
+
+        /* 右侧编辑区 */
+        .editor {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+        }
+
+        .editor-header {
+            padding: 16px 20px 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .editor-header input {
+            flex: 1;
+            border: none;
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            outline: none;
+        }
+
+        .editor-header input::placeholder {
+            color: #ccc;
+        }
+
+        /* 分类选择器 */
+        .category-select {
+            position: relative;
+        }
+
+        .category-select select {
+            padding: 4px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #666;
+            background: #fff;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .category-select select:focus {
+            border-color: #999;
+        }
+
+        .editor-content {
+            flex: 1;
+            padding: 8px 20px 20px;
+        }
+
+        .editor-content textarea {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+            resize: none;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #444;
+            font-family: inherit;
+        }
+
+        .editor-content textarea::placeholder {
+            color: #ccc;
+        }
+
+        /* 底部状态栏 */
+        .statusbar {
+            background: #fff;
+            border-top: 1px solid #ddd;
+            padding: 4px 16px;
+            font-size: 12px;
+            color: #999;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        /* 分类管理弹窗 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            width: 320px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal h3 {
+            margin-bottom: 16px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .modal-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .modal-item span {
+            font-size: 14px;
+            color: #444;
+        }
+
+        .modal-item button {
+            padding: 2px 8px;
+            font-size: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #fff;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-item button:hover {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .modal-add {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .modal-add input {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .modal-add input:focus {
+            border-color: #999;
+        }
+
+        .modal-add button {
+            padding: 6px 12px;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .modal-add button:hover {
+            background: #555;
+        }
+
+        .modal-close {
+            margin-top: 16px;
+            text-align: right;
+        }
+
+        .modal-close button {
+            padding: 6px 16px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .sidebar {
+                width: 100%;
+                position: absolute;
+                z-index: 10;
+                height: calc(100vh - 44px);
+                transform: translateX(-100%);
+                transition: transform 0.2s;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .toolbar .btn-menu {
+                display: block;
+            }
+        }
+
+        @media (min-width: 601px) {
+            .toolbar .btn-menu {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 工具栏 -->
+    <div class="toolbar">
+        <button class="btn-menu" onclick="toggleSidebar()">☰</button>
+        <button onclick="newNote()">新建</button>
+        <button onclick="deleteNote()">删除</button>
+        <button onclick="showCategoryModal()">分类管理</button>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="搜索..." oninput="searchNotes()">
+        </div>
+    </div>
+
+    <!-- 主内容 -->
+    <div class="main">
+        <!-- 左侧列表 -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">全部笔记</div>
+            <div class="category-tabs" id="categoryTabs"></div>
+            <div class="notes-list" id="notesList"></div>
+        </div>
+
+        <!-- 右侧编辑区 -->
+        <div class="editor" id="editor">
+            <div class="empty-state" id="emptyState">
+                选择或新建一个笔记
+            </div>
+        </div>
+    </div>
+
+    <!-- 状态栏 -->
+    <div class="statusbar">
+        <span id="noteCount">0 个笔记</span>
+        <span id="saveStatus"></span>
+    </div>
+
+    <!-- 分类管理弹窗 -->
+    <div class="modal-overlay" id="categoryModal">
+        <div class="modal">
+            <h3>管理分类</h3>
+            <div id="categoryList"></div>
+            <div class="modal-add">
+                <input type="text" id="newCategoryInput" placeholder="新分类名称...">
+                <button onclick="addCategory()">添加</button>
+            </div>
+            <div class="modal-close">
+                <button onclick="hideCategoryModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 默认分类
+        const DEFAULT_CATEGORIES = ['未分类', '生活', '工作', '技术', '学习'];
+        
+        // 数据
+        let notes = JSON.parse(localStorage.getItem('notes')) || [];
+        let categories = JSON.parse(localStorage.getItem('categories')) || DEFAULT_CATEGORIES;
+        let currentId = null;
+        let currentCategory = '全部';
+        let saveTimer = null;
+
+        // 初始化
+        function init() {
+            // 给旧笔记补上分类字段
+            notes.forEach(n => {
+                if (!n.category) n.category = '未分类';
+            });
+            
+            renderCategoryTabs();
+            renderList();
+            if (notes.length > 0) {
+                selectNote(notes[0].id);
+            }
+            updateCount();
+        }
+
+        // 渲染分类标签
+        function renderCategoryTabs() {
+            const tabs = document.getElementById('categoryTabs');
+            
+            // 统计每个分类的笔记数
+            const counts = { '全部': notes.length };
+            categories.forEach(c => counts[c] = 0);
+            notes.forEach(n => {
+                counts[n.category] = (counts[n.category] || 0) + 1;
+            });
+            
+            let html = `<div class="category-tab ${currentCategory === '全部' ? 'active' : ''}" onclick="filterCategory('全部')">全部<span class="count">${notes.length}</span></div>`;
+            
+            categories.forEach(c => {
+                html += `<div class="category-tab ${currentCategory === c ? 'active' : ''}" onclick="filterCategory('${c}')">${c}<span class="count">${counts[c] || 0}</span></div>`;
+            });
+            
+            tabs.innerHTML = html;
+        }
+
+        // 按分类筛选
+        function filterCategory(category) {
+            currentCategory = category;
+            renderCategoryTabs();
+            renderList();
+        }
+
+        // 渲染列表
+        function renderList(filter) {
+            const list = document.getElementById('notesList');
+            let items = notes;
+            
+            // 分类筛选
+            if (currentCategory !== '全部') {
+                items = items.filter(n => n.category === currentCategory);
+            }
+            
+            // 搜索筛选
+            if (filter) {
+                items = items.filter(n => (n.title + n.content).includes(filter));
+            }
+
+            list.innerHTML = items.map(n => `
+                <div class="note-item ${n.id === currentId ? 'active' : ''}" onclick="selectNote('${n.id}')">
+                    <div class="title">${n.title || '无标题'}</div>
+                    <div class="preview">${(n.content || '').substring(0, 50)}</div>
+                    <div class="meta">
+                        <span class="date">${formatDate(n.updatedAt)}</span>
+                        <span class="category-badge">${n.category}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 新建笔记
+        function newNote() {
+            const note = {
+                id: Date.now().toString(),
+                title: '',
+                content: '',
+                category: currentCategory === '全部' ? '未分类' : currentCategory,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            notes.unshift(note);
+            save();
+            renderCategoryTabs();
+            renderList();
+            selectNote(note.id);
+            updateCount();
+        }
+
+        // 选择笔记
+        function selectNote(id) {
+            currentId = id;
+            const note = notes.find(n => n.id === id);
+            if (!note) return;
+
+            renderList();
+            
+            // 生成分类选项
+            const categoryOptions = categories.map(c => 
+                `<option value="${c}" ${note.category === c ? 'selected' : ''}>${c}</option>`
+            ).join('');
+
+            const editor = document.getElementById('editor');
+            editor.innerHTML = `
+                <div class="editor-header">
+                    <input type="text" id="noteTitle" value="${note.title}" placeholder="标题" oninput="onEdit()">
+                    <div class="category-select">
+                        <select id="noteCategory" onchange="onCategoryChange()">
+                            ${categoryOptions}
+                        </select>
+                    </div>
+                </div>
+                <div class="editor-content">
+                    <textarea id="noteContent" placeholder="开始写..." oninput="onEdit()">${note.content}</textarea>
+                </div>
+            `;
+        }
+
+        // 分类变更
+        function onCategoryChange() {
+            const note = notes.find(n => n.id === currentId);
+            if (!note) return;
+            
+            note.category = document.getElementById('noteCategory').value;
+            note.updatedAt = new Date().toISOString();
+            
+            save();
+            renderCategoryTabs();
+            renderList();
+        }
+
+        // 编辑
+        function onEdit() {
+            const note = notes.find(n => n.id === currentId);
+            if (!note) return;
+
+            note.title = document.getElementById('noteTitle').value;
+            note.content = document.getElementById('noteContent').value;
+            note.updatedAt = new Date().toISOString();
+
+            renderList();
+            
+            clearTimeout(saveTimer);
+            saveTimer = setTimeout(() => {
+                save();
+                document.getElementById('saveStatus').textContent = '已保存';
+                setTimeout(() => {
+                    document.getElementById('saveStatus').textContent = '';
+                }, 2000);
+            }, 500);
+        }
+
+        // 删除笔记
+        function deleteNote() {
+            if (!currentId) return;
+            if (!confirm('确定删除这个笔记？')) return;
+
+            notes = notes.filter(n => n.id !== currentId);
+            save();
+            currentId = null;
+
+            if (notes.length > 0) {
+                selectNote(notes[0].id);
+            } else {
+                document.getElementById('editor').innerHTML = '<div class="empty-state">选择或新建一个笔记</div>';
+            }
+            
+            renderCategoryTabs();
+            renderList();
+            updateCount();
+        }
+
+        // 搜索
+        function searchNotes() {
+            const filter = document.getElementById('searchInput').value;
+            renderList(filter);
+        }
+
+        // 保存
+        function save() {
+            localStorage.setItem('notes', JSON.stringify(notes));
+            localStorage.setItem('categories', JSON.stringify(categories));
+        }
+
+        // 格式化日期
+        function formatDate(str) {
+            const d = new Date(str);
+            const now = new Date();
+            const diff = now - d;
+
+            if (diff < 60000) return '刚刚';
+            if (diff < 3600000) return Math.floor(diff / 60000) + ' 分钟前';
+            if (diff < 86400000) return Math.floor(diff / 3600000) + ' 小时前';
+            
+            return (d.getMonth() + 1) + '月' + d.getDate() + '日';
+        }
+
+        // 更新计数
+        function updateCount() {
+            const filtered = currentCategory === '全部' ? notes : notes.filter(n => n.category === currentCategory);
+            document.getElementById('noteCount').textContent = filtered.length + ' 个笔记';
+        }
+
+        // 切换侧边栏（移动端）
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+        }
+
+        // 分类管理弹窗
+        function showCategoryModal() {
+            renderCategoryList();
+            document.getElementById('categoryModal').classList.add('show');
+        }
+
+        function hideCategoryModal() {
+            document.getElementById('categoryModal').classList.remove('show');
+        }
+
+        function renderCategoryList() {
+            const list = document.getElementById('categoryList');
+            list.innerHTML = categories.map(c => {
+                const count = notes.filter(n => n.category === c).length;
+                return `
+                    <div class="modal-item">
+                        <span>${c} (${count}个笔记)</span>
+                        <div>
+                            <button onclick="renameCategory('${c}')" style="margin-right:4px">改名</button>
+                            <button onclick="deleteCategory('${c}')">删除</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addCategory() {
+            const input = document.getElementById('newCategoryInput');
+            const name = input.value.trim();
+            
+            if (!name) return;
+            if (categories.includes(name)) {
+                alert('该分类已存在');
+                return;
+            }
+            
+            categories.push(name);
+            save();
+            input.value = '';
+            renderCategoryList();
+            renderCategoryTabs();
+            
+            // 更新编辑器中的分类选择器
+            if (currentId) selectNote(currentId);
+        }
+
+        function deleteCategory(name) {
+            if (!confirm(`确定删除分类"${name}"？该分类下的笔记将变为"未分类"`)) return;
+            
+            // 把该分类下的笔记改为未分类
+            notes.forEach(n => {
+                if (n.category === name) n.category = '未分类';
+            });
+            
+            categories = categories.filter(c => c !== name);
+            save();
+            renderCategoryList();
+            renderCategoryTabs();
+            renderList();
+            updateCount();
+        }
+
+        function renameCategory(oldName) {
+            const newName = prompt(`将分类"${oldName}"改名为：`, oldName);
+            if (!newName || newName.trim() === oldName) return;
+            
+            const trimmed = newName.trim();
+            if (categories.includes(trimmed)) {
+                alert('该分类名已存在');
+                return;
+            }
+            
+            // 更新分类列表
+            const idx = categories.indexOf(oldName);
+            if (idx !== -1) categories[idx] = trimmed;
+            
+            // 更新笔记的分类
+            notes.forEach(n => {
+                if (n.category === oldName) n.category = trimmed;
+            });
+            
+            // 如果当前选中的是被改名的分类，更新选中状态
+            if (currentCategory === oldName) currentCategory = trimmed;
+            
+            save();
+            renderCategoryList();
+            renderCategoryTabs();
+            renderList();
+            
+            // 更新编辑器中的分类选择器
+            if (currentId) selectNote(currentId);
+        }
+
+        // 快捷键
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && e.key === 'n') {
+                e.preventDefault();
+                newNote();
+            }
+        });
+
+        init();
+    </script>
+</body>
+</html>
