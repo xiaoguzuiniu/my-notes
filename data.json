@@ -20,9 +20,9 @@
       "id": "1777714205052",
       "title": "情感分析流程",
       "content": "dp-sink 入库成功\n    ↓\n发送 Kafka 消息到 dp-sentiment-trigger-topic\n    ↓\ndp-sentiment 消费消息\n    ↓\n根据评论ID查询并分析\n    ↓\n结果写入 analysis 数据库",
-      "category": "未分类",
+      "category": "毕设",
       "createdAt": "2026-05-02T09:30:05.052Z",
-      "updatedAt": "2026-05-02T09:30:22.112Z"
+      "updatedAt": "2026-05-02T15:00:37.969Z"
     },
     {
       "id": "1777708182561",
@@ -41,5 +41,5 @@
     "学习",
     "毕设"
   ],
-  "updatedAt": "2026-05-02T15:00:29.793Z"
+  "updatedAt": "2026-05-02T15:00:39.970Z"
 }
