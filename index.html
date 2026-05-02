@@ -61,6 +61,40 @@
             border-color: #999;
         }
 
+        /* 同步状态 */
+        .sync-status {
+            font-size: 12px;
+            color: #999;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .sync-status .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+        }
+
+        .sync-status .dot.synced {
+            background: #4caf50;
+        }
+
+        .sync-status .dot.syncing {
+            background: #ff9800;
+            animation: pulse 1s infinite;
+        }
+
+        .sync-status .dot.error {
+            background: #f44336;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
         /* 主内容区 */
         .main {
             flex: 1;
@@ -265,7 +299,7 @@
             font-size: 14px;
         }
 
-        /* 分类管理弹窗 */
+        /* 弹窗通用 */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -287,7 +321,7 @@
             background: #fff;
             border-radius: 8px;
             padding: 20px;
-            width: 320px;
+            width: 360px;
             max-height: 80vh;
             overflow-y: auto;
         }
@@ -373,6 +407,39 @@
             font-size: 13px;
         }
 
+        /* 设置表单 */
+        .setting-form {
+            margin-bottom: 16px;
+        }
+
+        .setting-form label {
+            display: block;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        .setting-form input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            outline: none;
+            margin-bottom: 12px;
+        }
+
+        .setting-form input:focus {
+            border-color: #999;
+        }
+
+        .setting-form .hint {
+            font-size: 11px;
+            color: #999;
+            margin-top: -8px;
+            margin-bottom: 12px;
+        }
+
         /* 响应式 */
         @media (max-width: 600px) {
             .sidebar {
@@ -407,6 +474,11 @@
         <button onclick="newNote()">新建</button>
         <button onclick="deleteNote()">删除</button>
         <button onclick="showCategoryModal()">分类管理</button>
+        <button onclick="showSettingsModal()">⚙ 设置</button>
+        <div class="sync-status" id="syncStatus">
+            <span class="dot" id="syncDot"></span>
+            <span id="syncText">未配置</span>
+        </div>
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="搜索..." oninput="searchNotes()">
         </div>
@@ -450,19 +522,60 @@
         </div>
     </div>
 
+    <!-- 设置弹窗 -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <h3>同步设置</h3>
+            <div class="setting-form">
+                <label>GitHub Token</label>
+                <input type="password" id="settingToken" placeholder="ghp_xxxxxxxx">
+                <div class="hint">需要 repo 权限，用于同步笔记数据</div>
+                
+                <label>仓库地址</label>
+                <input type="text" id="settingRepo" placeholder="xiaoguzuiniu/my-notes">
+                <div class="hint">格式：用户名/仓库名</div>
+                
+                <label>数据文件名</label>
+                <input type="text" id="settingFile" placeholder="data.json">
+                <div class="hint">笔记数据保存在仓库中的文件名</div>
+            </div>
+            <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                <button onclick="testConnection()" style="padding: 6px 12px; background: #fff; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">测试连接</button>
+                <button onclick="saveSettings()" style="padding: 6px 16px; background: #333; color: #fff; border: none; border-radius: 4px; cursor: pointer;">保存</button>
+                <button onclick="hideSettingsModal()" style="padding: 6px 16px; background: #fff; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">取消</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // 默认分类
+        // 配置
         const DEFAULT_CATEGORIES = ['未分类', '生活', '工作', '技术', '学习'];
         
         // 数据
-        let notes = JSON.parse(localStorage.getItem('notes')) || [];
-        let categories = JSON.parse(localStorage.getItem('categories')) || DEFAULT_CATEGORIES;
+        let notes = [];
+        let categories = DEFAULT_CATEGORIES;
         let currentId = null;
         let currentCategory = '全部';
         let saveTimer = null;
+        let syncTimer = null;
+        let fileSha = null; // 用于 GitHub API 更新
+
+        // GitHub 配置
+        let githubConfig = JSON.parse(localStorage.getItem('githubConfig')) || {
+            token: '',
+            repo: '',
+            file: 'data.json'
+        };
 
         // 初始化
-        function init() {
+        async function init() {
+            // 加载本地数据
+            const localNotes = localStorage.getItem('notes');
+            const localCategories = localStorage.getItem('categories');
+            
+            if (localNotes) notes = JSON.parse(localNotes);
+            if (localCategories) categories = JSON.parse(localCategories);
+            
             // 给旧笔记补上分类字段
             notes.forEach(n => {
                 if (!n.category) n.category = '未分类';
@@ -470,17 +583,21 @@
             
             renderCategoryTabs();
             renderList();
-            if (notes.length > 0) {
+            updateCount();
+            updateSyncStatus();
+            
+            // 如果配置了 GitHub，尝试从远程加载
+            if (githubConfig.token && githubConfig.repo) {
+                await loadFromGitHub();
+            } else if (notes.length > 0) {
                 selectNote(notes[0].id);
             }
-            updateCount();
         }
 
         // 渲染分类标签
         function renderCategoryTabs() {
             const tabs = document.getElementById('categoryTabs');
             
-            // 统计每个分类的笔记数
             const counts = { '全部': notes.length };
             categories.forEach(c => counts[c] = 0);
             notes.forEach(n => {
@@ -508,12 +625,10 @@
             const list = document.getElementById('notesList');
             let items = notes;
             
-            // 分类筛选
             if (currentCategory !== '全部') {
                 items = items.filter(n => n.category === currentCategory);
             }
             
-            // 搜索筛选
             if (filter) {
                 items = items.filter(n => (n.title + n.content).includes(filter));
             }
@@ -541,11 +656,12 @@
                 updatedAt: new Date().toISOString()
             };
             notes.unshift(note);
-            save();
+            saveLocal();
             renderCategoryTabs();
             renderList();
             selectNote(note.id);
             updateCount();
+            syncToGitHub();
         }
 
         // 选择笔记
@@ -556,7 +672,6 @@
 
             renderList();
             
-            // 生成分类选项
             const categoryOptions = categories.map(c => 
                 `<option value="${c}" ${note.category === c ? 'selected' : ''}>${c}</option>`
             ).join('');
@@ -564,7 +679,7 @@
             const editor = document.getElementById('editor');
             editor.innerHTML = `
                 <div class="editor-header">
-                    <input type="text" id="noteTitle" value="${note.title}" placeholder="标题" oninput="onEdit()">
+                    <input type="text" id="noteTitle" value="${escapeHtml(note.title)}" placeholder="标题" oninput="onEdit()">
                     <div class="category-select">
                         <select id="noteCategory" onchange="onCategoryChange()">
                             ${categoryOptions}
@@ -572,7 +687,7 @@
                     </div>
                 </div>
                 <div class="editor-content">
-                    <textarea id="noteContent" placeholder="开始写..." oninput="onEdit()">${note.content}</textarea>
+                    <textarea id="noteContent" placeholder="开始写..." oninput="onEdit()">${escapeHtml(note.content)}</textarea>
                 </div>
             `;
         }
@@ -585,9 +700,10 @@
             note.category = document.getElementById('noteCategory').value;
             note.updatedAt = new Date().toISOString();
             
-            save();
+            saveLocal();
             renderCategoryTabs();
             renderList();
+            syncToGitHub();
         }
 
         // 编辑
@@ -603,12 +719,13 @@
             
             clearTimeout(saveTimer);
             saveTimer = setTimeout(() => {
-                save();
+                saveLocal();
                 document.getElementById('saveStatus').textContent = '已保存';
                 setTimeout(() => {
                     document.getElementById('saveStatus').textContent = '';
                 }, 2000);
-            }, 500);
+                syncToGitHub();
+            }, 1000);
         }
 
         // 删除笔记
@@ -617,7 +734,7 @@
             if (!confirm('确定删除这个笔记？')) return;
 
             notes = notes.filter(n => n.id !== currentId);
-            save();
+            saveLocal();
             currentId = null;
 
             if (notes.length > 0) {
@@ -629,6 +746,7 @@
             renderCategoryTabs();
             renderList();
             updateCount();
+            syncToGitHub();
         }
 
         // 搜索
@@ -637,10 +755,189 @@
             renderList(filter);
         }
 
-        // 保存
-        function save() {
+        // 本地保存
+        function saveLocal() {
             localStorage.setItem('notes', JSON.stringify(notes));
             localStorage.setItem('categories', JSON.stringify(categories));
+        }
+
+        // GitHub 同步
+        async function syncToGitHub() {
+            if (!githubConfig.token || !githubConfig.repo) return;
+            
+            clearTimeout(syncTimer);
+            syncTimer = setTimeout(async () => {
+                setSyncStatus('syncing', '同步中...');
+                
+                try {
+                    const data = {
+                        notes: notes,
+                        categories: categories,
+                        updatedAt: new Date().toISOString()
+                    };
+                    
+                    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+                    
+                    let body = {
+                        message: 'sync: update notes',
+                        content: content
+                    };
+                    
+                    if (fileSha) {
+                        body.sha = fileSha;
+                    }
+                    
+                    const resp = await fetch(`https://api.github.com/repos/${githubConfig.repo}/contents/${githubConfig.file}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `token ${githubConfig.token}`,
+                            'Accept': 'application/vnd.github.v3+json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(body)
+                    });
+                    
+                    if (resp.ok) {
+                        const result = await resp.json();
+                        fileSha = result.content.sha;
+                        setSyncStatus('synced', '已同步');
+                    } else {
+                        const err = await resp.json();
+                        setSyncStatus('error', '同步失败');
+                        console.error('Sync error:', err);
+                    }
+                } catch (e) {
+                    setSyncStatus('error', '网络错误');
+                    console.error('Sync error:', e);
+                }
+            }, 2000);
+        }
+
+        // 从 GitHub 加载
+        async function loadFromGitHub() {
+            setSyncStatus('syncing', '加载中...');
+            
+            try {
+                const resp = await fetch(`https://api.github.com/repos/${githubConfig.repo}/contents/${githubConfig.file}`, {
+                    headers: {
+                        'Authorization': `token ${githubConfig.token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (resp.ok) {
+                    const result = await resp.json();
+                    fileSha = result.sha;
+                    
+                    const content = decodeURIComponent(escape(atob(result.content)));
+                    const data = JSON.parse(content);
+                    
+                    if (data.notes) notes = data.notes;
+                    if (data.categories) categories = data.categories;
+                    
+                    saveLocal();
+                    renderCategoryTabs();
+                    renderList();
+                    updateCount();
+                    
+                    if (notes.length > 0) {
+                        selectNote(notes[0].id);
+                    }
+                    
+                    setSyncStatus('synced', '已同步');
+                } else if (resp.status === 404) {
+                    // 文件不存在，首次使用，上传当前数据
+                    setSyncStatus('synced', '准备就绪');
+                    syncToGitHub();
+                } else {
+                    setSyncStatus('error', '加载失败');
+                }
+            } catch (e) {
+                setSyncStatus('error', '网络错误');
+                console.error('Load error:', e);
+                
+                if (notes.length > 0) {
+                    selectNote(notes[0].id);
+                }
+            }
+        }
+
+        // 同步状态
+        function setSyncStatus(status, text) {
+            const dot = document.getElementById('syncDot');
+            const textEl = document.getElementById('syncText');
+            
+            dot.className = 'dot ' + status;
+            textEl.textContent = text;
+        }
+
+        function updateSyncStatus() {
+            if (githubConfig.token && githubConfig.repo) {
+                setSyncStatus('synced', '已配置');
+            } else {
+                setSyncStatus('', '未配置');
+            }
+        }
+
+        // 设置弹窗
+        function showSettingsModal() {
+            document.getElementById('settingToken').value = githubConfig.token || '';
+            document.getElementById('settingRepo').value = githubConfig.repo || '';
+            document.getElementById('settingFile').value = githubConfig.file || 'data.json';
+            document.getElementById('settingsModal').classList.add('show');
+        }
+
+        function hideSettingsModal() {
+            document.getElementById('settingsModal').classList.remove('show');
+        }
+
+        async function saveSettings() {
+            githubConfig = {
+                token: document.getElementById('settingToken').value.trim(),
+                repo: document.getElementById('settingRepo').value.trim(),
+                file: document.getElementById('settingFile').value.trim() || 'data.json'
+            };
+            
+            localStorage.setItem('githubConfig', JSON.stringify(githubConfig));
+            hideSettingsModal();
+            updateSyncStatus();
+            
+            if (githubConfig.token && githubConfig.repo) {
+                await loadFromGitHub();
+            }
+        }
+
+        async function testConnection() {
+            const token = document.getElementById('settingToken').value.trim();
+            const repo = document.getElementById('settingRepo').value.trim();
+            
+            if (!token || !repo) {
+                alert('请填写 Token 和仓库地址');
+                return;
+            }
+            
+            try {
+                const resp = await fetch(`https://api.github.com/repos/${repo}`, {
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (resp.ok) {
+                    alert('✅ 连接成功！');
+                } else {
+                    alert('❌ 连接失败，请检查 Token 和仓库地址');
+                }
+            } catch (e) {
+                alert('❌ 网络错误');
+            }
+        }
+
+        // HTML 转义
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
 
         // 格式化日期
@@ -704,29 +1001,29 @@
             }
             
             categories.push(name);
-            save();
+            saveLocal();
             input.value = '';
             renderCategoryList();
             renderCategoryTabs();
+            syncToGitHub();
             
-            // 更新编辑器中的分类选择器
             if (currentId) selectNote(currentId);
         }
 
         function deleteCategory(name) {
             if (!confirm(`确定删除分类"${name}"？该分类下的笔记将变为"未分类"`)) return;
             
-            // 把该分类下的笔记改为未分类
             notes.forEach(n => {
                 if (n.category === name) n.category = '未分类';
             });
             
             categories = categories.filter(c => c !== name);
-            save();
+            saveLocal();
             renderCategoryList();
             renderCategoryTabs();
             renderList();
             updateCount();
+            syncToGitHub();
         }
 
         function renameCategory(oldName) {
@@ -739,24 +1036,21 @@
                 return;
             }
             
-            // 更新分类列表
             const idx = categories.indexOf(oldName);
             if (idx !== -1) categories[idx] = trimmed;
             
-            // 更新笔记的分类
             notes.forEach(n => {
                 if (n.category === oldName) n.category = trimmed;
             });
             
-            // 如果当前选中的是被改名的分类，更新选中状态
             if (currentCategory === oldName) currentCategory = trimmed;
             
-            save();
+            saveLocal();
             renderCategoryList();
             renderCategoryTabs();
             renderList();
+            syncToGitHub();
             
-            // 更新编辑器中的分类选择器
             if (currentId) selectNote(currentId);
         }
 
