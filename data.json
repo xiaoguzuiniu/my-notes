@@ -3,10 +3,10 @@
     {
       "id": "1777714205052",
       "title": "情感分析流程",
-      "content": "数据流程\ndp-sink 入库成功\n    ↓\n发送 Kafka 消息到 dp-sentiment-trigger-topic\n    ↓\ndp-sentiment 消费消息\n    ↓\n根据评论ID查询并分析\n    ↓\n结果写入 analysis 数据库",
+      "content": "\ndp-sink 入库成功\n    ↓\n发送 Kafka 消息到 dp-sentiment-trigger-topic\n    ↓\ndp-sentiment 消费消息\n    ↓\n根据评论ID查询并分析\n    ↓\n结果写入 analysis 数据库",
       "category": "未分类",
       "createdAt": "2026-05-02T09:30:05.052Z",
-      "updatedAt": "2026-05-02T09:30:17.687Z"
+      "updatedAt": "2026-05-02T09:30:20.581Z"
     },
     {
       "id": "1777708182561",
@@ -25,5 +25,5 @@
     "学习",
     "毕设"
   ],
-  "updatedAt": "2026-05-02T09:30:18.485Z"
+  "updatedAt": "2026-05-02T09:30:20.695Z"
 }
