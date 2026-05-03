@@ -156,6 +156,11 @@
         .notes-list {
             flex: 1;
             overflow-y: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .notes-list::-webkit-scrollbar {
+            display: none;
         }
 
         .note-item {
