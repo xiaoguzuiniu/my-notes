@@ -1223,6 +1223,11 @@
                 e.preventDefault();
                 newNote();
             }
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                saveLocal();
+                syncToGitHub();
+            }
         });
 
         init();
