@@ -741,7 +741,52 @@
         const DEFAULT_CATEGORIES = ['未分类', '生活', '工作', '技术', '学习'];
         
         // 数据
-        let notes = [];
+        let notes = [
+        {
+            "id": "note_001",
+            "title": "今天任务",
+            "content": "1. 完成数据采集分析平台前端\n2. 整理会议纪要\n3. 回复客户邮件",
+            "category": "工作",
+            "tags": ["任务", "今日"],
+            "created": "2026-05-03T09:00:00",
+            "updated": "2026-05-03T09:00:00",
+            "isFavorite": false,
+            "isMarkdown": false
+        },
+        {
+            "id": "note_002",
+            "title": "明天计划",
+            "content": "1. 完善数据库设计文档\n2. 准备周会演示\n3. 学习设计模式",
+            "category": "工作",
+            "tags": ["计划", "明日"],
+            "created": "2026-05-03T09:00:00",
+            "updated": "2026-05-03T09:00:00",
+            "isFavorite": false,
+            "isMarkdown": false
+        },
+        {
+            "id": "note_003",
+            "title": "学习笔记",
+            "content": "1. Spring Boot 自动配置原理\n2. React Hooks 最佳实践\n3. Docker 容器化部署",
+            "category": "学习",
+            "tags": ["学习", "技术"],
+            "created": "2026-05-03T09:00:00",
+            "updated": "2026-05-03T09:00:00",
+            "isFavorite": false,
+            "isMarkdown": false
+        },
+        {
+            "id": "note_004",
+            "title": "学15个设计模式",
+            "content": "1. 单例模式\n2. 工厂模式\n3. 抽象工厂模式\n4. 建造者模式\n5. 原型模式\n6. 适配器模式\n7. 桥接模式\n8. 组合模式\n9. 装饰器模式\n10. 外观模式\n11. 享元模式\n12. 代理模式\n13. 责任链模式\n14. 命令模式\n15. 迭代器模式",
+            "category": "学习",
+            "tags": ["设计模式", "编程"],
+            "created": "2026-05-04T23:04:00",
+            "updated": "2026-05-04T23:04:00",
+            "isFavorite": false,
+            "isMarkdown": false
+        }
+    ];
         let categories = DEFAULT_CATEGORIES;
         let currentId = null;
         let currentCategory = '全部';
