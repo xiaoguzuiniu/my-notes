@@ -1322,7 +1322,7 @@
             event.target.value = ''; // 清空 input
         }
         
-        // 上传文件
+        // 上传文件（带进度和错误处理）
         async function uploadFiles(files) {
             if (!githubConfig.token || !githubConfig.repo) {
                 alert('请先配置 GitHub Token 和仓库地址');
@@ -1330,91 +1330,98 @@
             }
             
             const [owner, repo] = githubConfig.repo.split('/');
+            const headers = {
+                'Authorization': `token ${githubConfig.token}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            };
+            
+            const totalFiles = files.length;
+            let successCount = 0;
+            let failCount = 0;
+            
+            const progressDiv = document.getElementById('uploadProgress');
+            const fileNameSpan = document.getElementById('uploadFileName');
+            const percentSpan = document.getElementById('uploadPercent');
+            const barDiv = document.getElementById('uploadBar');
+            
+            progressDiv.style.display = 'block';
             
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
-                await uploadSingleFile(owner, repo, file);
-            }
-            
-            // 上传完成后刷新列表
-            loadFilesList();
-        }
-        
-        // 上传单个文件
-        async function uploadSingleFile(owner, repo, file) {
-            const headers = {
-                'Authorization': `token ${githubConfig.token}`,
-                'Accept': 'application/vnd.github.v3+json'
-            };
-            
-            // 显示进度
-            document.getElementById('uploadProgress').style.display = 'block';
-            document.getElementById('uploadFileName').textContent = file.name;
-            document.getElementById('uploadPercent').textContent = '准备中...';
-            document.getElementById('uploadBar').style.width = '0%';
-            
-            try {
-                // 1. 获取或创建 Release
-                let releaseId = await getOrCreateRelease(owner, repo, headers);
                 
-                // 2. 检查文件是否已存在，如果存在则删除
-                await deleteExistingAsset(owner, repo, releaseId, file.name, headers);
+                fileNameSpan.textContent = `[${i + 1}/${totalFiles}] ${file.name}`;
+                percentSpan.textContent = '准备中...';
+                barDiv.style.width = '0%';
                 
-                // 3. 读取文件
-                document.getElementById('uploadPercent').textContent = '读取文件中...';
-                const fileContent = await readFileAsArrayBuffer(file);
-                
-                // 4. 上传文件（使用 Contents API，支持 CORS）
-                document.getElementById('uploadPercent').textContent = '上传中...';
-                document.getElementById('uploadBar').style.width = '50%';
-                
-                // 读取文件并转为 base64
-                const reader = new FileReader();
-                const base64Content = await new Promise((resolve, reject) => {
-                    reader.onload = function() {
-                        const bytes = new Uint8Array(reader.result);
-                        let binary = '';
-                        for (let i = 0; i < bytes.length; i++) {
-                            binary += String.fromCharCode(bytes[i]);
-                        }
-                        resolve(btoa(binary));
-                    };
-                    reader.onerror = reject;
-                    reader.readAsArrayBuffer(file);
-                });
-                
-                // 使用 Contents API 上传
-                const filePath = `uploads/${Date.now()}_${file.name}`;
-                const uploadUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
-                
-                const response = await fetch(uploadUrl, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${githubConfig.token}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: `上传文件: ${file.name}`,
-                        content: base64Content
-                    })
-                });
-                
-                if (response.ok) {
-                    document.getElementById('uploadBar').style.width = '100%';
-                    document.getElementById('uploadPercent').textContent = '✅ 上传成功';
-                    setTimeout(() => {
-                        document.getElementById('uploadProgress').style.display = 'none';
-                        loadFilesList(); // 刷新文件列表
-                    }, 2000);
-                } else {
-                    const err = await response.json();
-                    document.getElementById('uploadPercent').textContent = `❌ 上传失败: ${err.message}`;
+                try {
+                    percentSpan.textContent = '读取文件中...';
+                    const arrayBuffer = await readFileAsArrayBuffer(file);
+                    
+                    const bytes = new Uint8Array(arrayBuffer);
+                    let binary = '';
+                    for (let j = 0; j < bytes.length; j++) {
+                        binary += String.fromCharCode(bytes[j]);
+                    }
+                    const base64Content = btoa(binary);
+                    
+                    percentSpan.textContent = '上传中...';
+                    barDiv.style.width = '50%';
+                    
+                    const timestamp = Date.now();
+                    const safeName = file.name.replace(/[^a-zA-Z0-9._\-\u4e00-\u9fa5]/g, '_');
+                    const filePath = `uploads/${timestamp}_${safeName}`;
+                    
+                    const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`, {
+                        method: 'PUT',
+                        headers,
+                        body: JSON.stringify({
+                            message: `上传文件: ${file.name}`,
+                            content: base64Content
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        barDiv.style.width = '100%';
+                        percentSpan.textContent = '✅ 上传成功';
+                        successCount++;
+                        
+                        const newFile = {
+                            name: `${timestamp}_${safeName}`,
+                            path: filePath,
+                            sha: (await response.json()).content.sha,
+                            size: file.size,
+                            download_url: `https://raw.githubusercontent.com/${owner}/${repo}/main/${filePath}`
+                        };
+                        filesCache.unshift(newFile);
+                        
+                    } else {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(errorData.message || `HTTP ${response.status}`);
+                    }
+                    
+                } catch (error) {
+                    console.error(`上传失败: ${file.name}`, error);
+                    percentSpan.textContent = `❌ 失败: ${error.message}`;
+                    failCount++;
                 }
-            } catch (error) {
-                document.getElementById('uploadPercent').textContent = `❌ 错误: ${error.message}`;
-                console.error('Upload error:', error);
+                
+                if (i < files.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
             }
+            
+            setTimeout(() => {
+                progressDiv.style.display = 'none';
+                
+                if (failCount === 0) {
+                    alert(`✅ 全部上传成功！共 ${successCount} 个文件`);
+                } else {
+                    alert(`上传完成：成功 ${successCount} 个，失败 ${failCount} 个`);
+                }
+                
+                renderFilesList(filesCache);
+            }, 1500);
         }
         
         // 获取或创建 Release
@@ -1475,13 +1482,28 @@
             });
         }
         
-        // 加载文件列表
-        async function loadFilesList() {
+        // 文件传输功能 - 优化版
+        let filesCache = []; // 本地缓存文件列表
+        let isFilesLoading = false;
+        
+        // 加载文件列表（带缓存）
+        async function loadFilesList(forceRefresh = false) {
             const filesList = document.getElementById('filesList');
+            
+            // 如果有缓存且不强制刷新，直接使用缓存
+            if (filesCache.length > 0 && !forceRefresh) {
+                renderFilesList(filesCache);
+                return;
+            }
+            
+            if (isFilesLoading) return;
+            isFilesLoading = true;
+            
             filesList.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">加载中...</div>';
             
             if (!githubConfig.token || !githubConfig.repo) {
                 filesList.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">请先配置 GitHub Token</div>';
+                isFilesLoading = false;
                 return;
             }
             
@@ -1492,55 +1514,105 @@
             };
             
             try {
-                // 从 uploads/ 目录读取文件列表
-                const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/uploads`, { headers });
+                const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/uploads`, { 
+                    headers,
+                    cache: 'no-cache'
+                });
                 
                 if (!response.ok) {
-                    filesList.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">暂无文件，上传第一个文件吧</div>';
+                    if (response.status === 404) {
+                        filesCache = [];
+                        renderFilesList([]);
+                    } else {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
                     return;
                 }
                 
                 const files = await response.json();
                 
-                if (!Array.isArray(files) || files.length === 0) {
-                    filesList.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">暂无文件，上传第一个文件吧</div>';
+                if (!Array.isArray(files)) {
+                    filesCache = [];
+                    renderFilesList([]);
                     return;
                 }
                 
-                // 过滤出文件（排除目录）
-                const fileList = files.filter(f => f.type === 'file');
-                
-                // 渲染文件列表
-                let html = '<div style="border: 1px solid #eee; border-radius: 6px; overflow: hidden;">';
-                
-                fileList.forEach(file => {
-                    // 从文件名中提取原始名称（去掉时间戳前缀）
-                    const originalName = file.name.replace(/^\d+_/, '');
-                    const size = formatFileSize(file.size);
-                    const date = new Date(file.last_modified || Date.now()).toLocaleDateString('zh-CN');
-                    const icon = getFileIcon(originalName);
-                    
-                    html += `
-                        <div style="display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid #f0f0f0; gap: 12px;">
-                            <span style="font-size: 24px;">${icon}</span>
-                            <div style="flex: 1; min-width: 0;">
-                                <div style="font-size: 14px; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${originalName}</div>
-                                <div style="font-size: 12px; color: #999;">${size} · ${date}</div>
-                            </div>
-                            <div style="display: flex; gap: 8px;">
-                                <button onclick="downloadFile('${file.download_url}', '${originalName}')" style="padding: 6px 12px; background: #fff; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 12px;">⬇ 下载</button>
-                                <button onclick="deleteFile('${file.path}', '${file.sha}', '${originalName}')" style="padding: 6px 12px; background: #fff; border: 1px solid #f44336; color: #f44336; border-radius: 4px; cursor: pointer; font-size: 12px;">🗑 删除</button>
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                html += '</div>';
-                filesList.innerHTML = html;
+                filesCache = files.filter(f => f.type === 'file');
+                renderFilesList(filesCache);
                 
             } catch (error) {
-                filesList.innerHTML = `<div style="text-align: center; color: #f44336; padding: 20px;">加载失败: ${error.message}</div>`;
+                console.error('加载文件列表失败:', error);
+                filesList.innerHTML = `
+                    <div style="text-align: center; color: #f44336; padding: 20px;">
+                        加载失败: ${error.message}
+                        <br><br>
+                        <button onclick="loadFilesList(true)" style="padding: 8px 16px; background: #f44336; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
+                            重试
+                        </button>
+                    </div>
+                `;
+            } finally {
+                isFilesLoading = false;
             }
+        }
+        
+        // 渲染文件列表
+        function renderFilesList(files) {
+            const filesList = document.getElementById('filesList');
+            
+            if (!files || files.length === 0) {
+                filesList.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">暂无文件，上传第一个文件吧</div>';
+                return;
+            }
+            
+            let html = '<div style="border: 1px solid #eee; border-radius: 6px; overflow: hidden;">';
+            
+            const sortedFiles = [...files].sort((a, b) => {
+                const timeA = parseInt(a.name.split('_')[0]) || 0;
+                const timeB = parseInt(b.name.split('_')[0]) || 0;
+                return timeB - timeA;
+            });
+            
+            sortedFiles.forEach(file => {
+                const originalName = file.name.replace(/^\d+_/, '');
+                const size = formatFileSize(file.size);
+                const timestamp = parseInt(file.name.split('_')[0]) || 0;
+                const date = timestamp ? new Date(timestamp).toLocaleDateString('zh-CN') : '未知';
+                const icon = getFileIcon(originalName);
+                
+                html += `
+                    <div id="file-${file.sha}" style="display: flex; align-items: center; padding: 12px 16px; border-bottom: 1px solid #f0f0f0; gap: 12px; transition: opacity 0.3s;">
+                        <span style="font-size: 24px;">${icon}</span>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="font-size: 14px; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${originalName}</div>
+                            <div style="font-size: 12px; color: #999;">${size} · ${date}</div>
+                        </div>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <button 
+                                onclick="downloadFile('${file.download_url}', '${originalName}')" 
+                                style="padding: 6px 12px; background: #fff; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 12px; white-space: nowrap;"
+                            >⬇ 下载</button>
+                            <button 
+                                id="delete-btn-${file.sha}"
+                                onclick="deleteFile('${file.path}', '${file.sha}', '${originalName}')" 
+                                style="padding: 6px 12px; background: #fff; border: 1px solid #f44336; color: #f44336; border-radius: 4px; cursor: pointer; font-size: 12px; white-space: nowrap;"
+                            >🗑 删除</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            html += `
+                <div style="text-align: center; margin-top: 12px;">
+                    <button 
+                        onclick="loadFilesList(true)" 
+                        style="padding: 8px 16px; background: #f5f5f5; border: 1px solid #ddd; border-radius: 4px; cursor: pointer; font-size: 12px; color: #666;"
+                    >🔄 刷新列表</button>
+                </div>
+            `;
+            
+            filesList.innerHTML = html;
         }
         
         // 下载文件
@@ -1554,9 +1626,23 @@
             document.body.removeChild(a);
         }
         
-        // 删除文件
+        // 删除文件（乐观更新 + 错误回滚）
         async function deleteFile(filePath, fileSha, fileName) {
             if (!confirm(`确定删除文件 "${fileName}"？`)) return;
+            
+            const fileElement = document.getElementById(`file-${fileSha}`);
+            const deleteBtn = document.getElementById(`delete-btn-${fileSha}`);
+            
+            // 乐观更新：先在 UI 上标记为删除中
+            if (fileElement) {
+                fileElement.style.opacity = '0.5';
+                fileElement.style.pointerEvents = 'none';
+            }
+            if (deleteBtn) {
+                deleteBtn.textContent = '⏳ 删除中...';
+                deleteBtn.style.borderColor = '#999';
+                deleteBtn.style.color = '#999';
+            }
             
             const [owner, repo] = githubConfig.repo.split('/');
             const headers = {
@@ -1576,12 +1662,34 @@
                 });
                 
                 if (response.ok) {
-                    loadFilesList();
+                    filesCache = filesCache.filter(f => f.sha !== fileSha);
+                    
+                    if (fileElement) {
+                        fileElement.style.transition = 'all 0.3s';
+                        fileElement.style.transform = 'translateX(100%)';
+                        fileElement.style.opacity = '0';
+                        setTimeout(() => {
+                            renderFilesList(filesCache);
+                        }, 300);
+                    }
                 } else {
-                    alert('删除失败');
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.message || `HTTP ${response.status}`);
                 }
             } catch (error) {
-                alert(`删除失败: ${error.message}`);
+                console.error('删除失败:', error);
+                
+                if (fileElement) {
+                    fileElement.style.opacity = '1';
+                    fileElement.style.pointerEvents = 'auto';
+                }
+                if (deleteBtn) {
+                    deleteBtn.textContent = '🗑 删除';
+                    deleteBtn.style.borderColor = '#f44336';
+                    deleteBtn.style.color = '#f44336';
+                }
+                
+                alert(`删除失败: ${error.message}\n\n请检查网络连接后重试。`);
             }
         }
         
