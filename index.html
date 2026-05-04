@@ -776,8 +776,9 @@
                 if (!n.category) n.category = '未分类';
             });
             
-            // 如果是第一次使用，添加示例笔记
-            if (!localStorage.getItem('notes') && notes.length === 0) {
+            // 检查是否已有帮助笔记，如果没有就添加
+            const hasHelpNote = notes.some(n => n.title && n.title.includes('编辑器格式指南'));
+            if (!hasHelpNote) {
                 const helpNote = {
                     id: 'help_' + Date.now(),
                     title: '📝 编辑器格式指南',
