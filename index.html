@@ -1405,6 +1405,7 @@
                     document.getElementById('uploadPercent').textContent = '✅ 上传成功';
                     setTimeout(() => {
                         document.getElementById('uploadProgress').style.display = 'none';
+                        loadFilesList(); // 刷新文件列表
                     }, 2000);
                 } else {
                     const err = await response.json();
