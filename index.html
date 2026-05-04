@@ -1124,6 +1124,98 @@ function hello() {
                     if (data.notes) notes = data.notes;
                     if (data.categories) categories = data.categories;
                     
+                    // 给旧笔记补上分类字段
+                    notes.forEach(n => {
+                        if (!n.category) n.category = '未分类';
+                    });
+                    
+                    // 检查是否已有帮助笔记，如果没有就添加
+                    const hasHelpNote = notes.some(n => n.title && n.title.includes('编辑器格式指南'));
+                    if (!hasHelpNote) {
+                        const helpNote = {
+                            id: 'help_' + Date.now(),
+                            title: '📝 编辑器格式指南',
+                            content: `# 编辑器格式指南
+
+## 文本格式
+
+### 加粗
+**这是加粗的文字**
+快捷键：Ctrl+B 或点击工具栏 𝐁 按钮
+
+### 斜体
+*这是斜体的文字*
+快捷键：Ctrl+I 或点击工具栏 𝐼 按钮
+
+### 删除线
+~~这是带删除线的文字~~
+快捷键：点击工具栏 S̶ 按钮
+
+## 标题
+
+# 一级标题
+## 二级标题
+### 三级标题
+快捷键：点击工具栏 H1/H2/H3 按钮
+
+## 列表
+
+### 无序列表
+- 项目一
+- 项目二
+- 项目三
+快捷键：点击工具栏 • 列表 按钮
+
+### 有序列表
+1. 第一步
+2. 第二步
+3. 第三步
+快捷键：点击工具栏 1. 列表 按钮
+
+## 引用
+
+> 这是一段引用文字
+> 可以用来标注重点或来源
+快捷键：点击工具栏 ❝ 引用 按钮
+
+## 代码
+
+行内代码：`console.log('hello')`
+快捷键：点击工具栏 </> 按钮
+
+代码块：
+```
+function hello() {
+    console.log('Hello World!');
+}
+```
+快捷键：点击工具栏 ``` 按钮
+
+## 链接
+
+[点击访问 GitHub](https://github.com)
+快捷键：点击工具栏 🔗 按钮
+
+## 分割线
+
+---
+
+## 使用技巧
+
+1. **快捷键**：选中文字后按快捷键，自动包裹格式
+2. **预览**：点击 👁 预览 按钮查看渲染效果
+3. **组合使用**：可以组合多种格式，如 ***加粗斜体***
+4. **自动保存**：编辑内容会自动保存到本地和 GitHub
+
+---
+💡 提示：这条笔记可以随时删除或修改`,
+                            category: '未分类',
+                            createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString()
+                        };
+                        notes.unshift(helpNote);
+                    }
+                    
                     saveLocal();
                     renderCategoryTabs();
                     renderList();
