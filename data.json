@@ -2,11 +2,11 @@
   "notes": [
     {
       "id": "1778031121872",
-      "title": "",
-      "content": "\n\n进入 / 退出全屏切换：Control + Command (⌘) + F\n关闭窗口：Command + W\n最小化：Command + M",
+      "title": "Mac 快捷键",
+      "content": "进入 / 退出全屏切换：Control + Command (⌘) + F\n关闭窗口：Command + W\n最小化：Command + M",
       "category": "工作",
       "createdAt": "2026-05-06T01:32:01.872Z",
-      "updatedAt": "2026-05-06T01:32:06.425Z"
+      "updatedAt": "2026-05-06T01:32:11.964Z"
     },
     {
       "id": "1777957722901",
@@ -106,5 +106,5 @@
     "毕设-古克文",
     "毕设-王春迎"
   ],
-  "updatedAt": "2026-05-06T01:32:07.371Z"
+  "updatedAt": "2026-05-06T01:32:12.268Z"
 }
