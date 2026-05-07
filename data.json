@@ -3,10 +3,10 @@
     {
       "id": "1778163843522",
       "title": "",
-      "content": "",
+      "content": "sudo mkdir -p /etc/docker\nsudo tee /etc/docker/daemon.json <<-'EOF'\n{\n  \"registry-mirrors\": [\n    \"https://docker.1ms.run\",\n    \"https://docker.m.daocloud.io\",\n    \"https://docker.xuanyuan.me\"\n  ]\n}\nEOF\n",
       "category": "未分类",
       "createdAt": "2026-05-07T14:24:03.522Z",
-      "updatedAt": "2026-05-07T14:24:03.522Z"
+      "updatedAt": "2026-05-07T14:24:05.805Z"
     },
     {
       "id": "1778050010986",
@@ -130,5 +130,5 @@
     "毕设-古克文",
     "毕设-王春迎"
   ],
-  "updatedAt": "2026-05-07T14:24:05.535Z"
+  "updatedAt": "2026-05-07T14:24:09.295Z"
 }
