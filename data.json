@@ -2,11 +2,11 @@
   "notes": [
     {
       "id": "1778328549763",
-      "title": "bu",
-      "content": "",
+      "title": "部署相关",
+      "content": "root@iv-ye4us7axogcva4gb45sh:~# docker run -d \\\n  --name my-mysql \\\n  -e MYSQL_ROOT_PASSWORD=StrongPassword123 \\\n  -e MYSQL_DATABASE=mydb \\\n  -e MYSQL_USER=myuser \\\n  -e MYSQL_PASSWORD=myuserpass \\\n  -p 3306:3306 \\\n  -v mysql_data:/var/lib/mysql \\\n  mysql:8.0\n",
       "category": "未分类",
       "createdAt": "2026-05-09T12:09:09.763Z",
-      "updatedAt": "2026-05-09T12:09:11.415Z"
+      "updatedAt": "2026-05-09T12:09:18.391Z"
     },
     {
       "id": "1778163843522",
@@ -138,5 +138,5 @@
     "毕设-古克文",
     "毕设-王春迎"
   ],
-  "updatedAt": "2026-05-09T12:09:11.773Z"
+  "updatedAt": "2026-05-09T12:09:18.559Z"
 }
