@@ -3,10 +3,10 @@
     {
       "id": "1778560934144",
       "title": "业务人员工具",
-      "content": "getSystemTaskCount\n用途：查询任务总数\n返回：当前账号采集任务总量\n\ngetAbnormalTaskCount\n用途：查询近 24 小时异常任务数\n返回：当前账号异常任务统计值\n\nlistTasks(platformCode)\n用途：列出采集任务\n参数：\nplatformCode：平台编码，可为空；为空时查询全部任务\n返回：当前账号任务列表及其运行信息\n\ncreateTask(name, code, cron, keyword)\n用途：创建新的采集任务\n参数：\nname：任务名称\ncode：任务编码\ncron：Cron 表达式\nkeyword：采集关键词\n返回：创建结果摘要\n风险：属于新增调度动作，应结合系统概况确认资源状态\n\nupdateTask(id, name, cron, keyword)\n用途：修改现有任务\n参数：\nid：任务 ID\nname：任务名称\ncron：Cron 表达式\nkeyword：采集关键词\n返回：更新结果摘要\n\n\ntriggerTask(nameOrId)\n用途：立即触发任务执行\n参数：\nnameOrId：任务名称或任务 ID\n返回：触发结果\n风险：属于主动干预调度\n\nstartTask(nameOrId)\n用途：启动任务\n参数：\nnameOrId：任务名称或任务 ID\n返回：启动结果\n\nstopTask(nameOrId)\n用途：停止任务\n参数：\nnameOrId：任务名称或任务 ID\n返回：停止结果\n\n\ngetTaskLogs(nameOrId)\n用途：查看任务执行日志\n参数：\nnameOrId：任务名称或任务 ID\n返回：该任务最近执行日志\n\n\n\n\n\n\n\n\n",
+      "content": "getSystemTaskCount\n用途：查询任务总数\n返回：当前账号采集任务总量\n\ngetAbnormalTaskCount\n用途：查询近 24 小时异常任务数\n返回：当前账号异常任务统计值\n\nlistTasks(platformCode)\n用途：列出采集任务\n参数：\nplatformCode：平台编码，可为空；为空时查询全部任务\n返回：当前账号任务列表及其运行信息\n\ncreateTask(name, code, cron, keyword)\n用途：创建新的采集任务\n参数：\nname：任务名称\ncode：任务编码\ncron：Cron 表达式\nkeyword：采集关键词\n返回：创建结果摘要\n风险：属于新增调度动作，应结合系统概况确认资源状态\n\nupdateTask(id, name, cron, keyword)\n用途：修改现有任务\n参数：\nid：任务 ID\nname：任务名称\ncron：Cron 表达式\nkeyword：采集关键词\n返回：更新结果摘要\n\n\ntriggerTask(nameOrId)\n用途：立即触发任务执行\n参数：\nnameOrId：任务名称或任务 ID\n返回：触发结果\n风险：属于主动干预调度\n\nstartTask(nameOrId)\n用途：启动任务\n参数：\nnameOrId：任务名称或任务 ID\n返回：启动结果\n\nstopTask(nameOrId)\n用途：停止任务\n参数：\nnameOrId：任务名称或任务 ID\n返回：停止结果\n\n\ngetTaskLogs(nameOrId)\n用途：查看任务执行日志\n参数：\nnameOrId：任务名称或任务 ID\n返回：该任务最近执行日志\n\nsearchRawData(keyword, platform, dataType)\n用途：搜索原始数据\n参数：\nkeyword：关键词\nplatform：平台编码或平台名\ndataType：数据类型\n返回：原始数据搜索结果摘要\n\n\n\n\n\n\n",
       "category": "毕设-古克文",
       "createdAt": "2026-05-12T04:42:14.144Z",
-      "updatedAt": "2026-05-12T04:48:16.630Z"
+      "updatedAt": "2026-05-12T04:48:46.755Z"
     },
     {
       "id": "1778560547360",
@@ -162,5 +162,5 @@
     "毕设-古克文",
     "毕设-王春迎"
   ],
-  "updatedAt": "2026-05-12T04:48:20.736Z"
+  "updatedAt": "2026-05-12T04:48:50.734Z"
 }
