@@ -1,6 +1,14 @@
 {
   "notes": [
     {
+      "id": "1779371191781",
+      "title": "",
+      "content": "",
+      "category": "未分类",
+      "createdAt": "2026-05-21T13:46:31.781Z",
+      "updatedAt": "2026-05-21T13:46:31.781Z"
+    },
+    {
       "id": "1779350447388",
       "title": "注册机",
       "content": "1、开源的 Gopay plus 注册机（非群主版本）：https://github.com/ywnd1144/Gopay_plus_automatic\n2、群主自研的 GPT free 协议注册机（适用于 Outlook 邮箱）：https://loveq.lanzn.com/i1IEF3pbkdfi\n需要的自取即可，有心的人自然觉得有用",
@@ -203,5 +211,5 @@
     "毕设-王春迎",
     "gpt"
   ],
-  "updatedAt": "2026-05-21T08:02:38.596Z"
+  "updatedAt": "2026-05-21T13:46:33.789Z"
 }
