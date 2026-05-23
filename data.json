@@ -108,7 +108,7 @@
       "id": "1778031121872",
       "title": "Mac 快捷键",
       "content": "进入 / 退出全屏切换：Control + Command (⌘) + F\n关闭窗口：Command + W\n最小化：Command + M",
-      "category": "工作",
+      "category": "未分类",
       "createdAt": "2026-05-06T01:32:01.872Z",
       "updatedAt": "2026-05-06T01:32:11.964Z"
     },
@@ -203,13 +203,11 @@
   ],
   "categories": [
     "未分类",
-    "生活",
-    "工作",
     "技术",
     "学习",
     "毕设-古克文",
     "毕设-王春迎",
     "gpt"
   ],
-  "updatedAt": "2026-05-23T06:49:42.440Z"
+  "updatedAt": "2026-05-23T06:52:11.423Z"
 }
