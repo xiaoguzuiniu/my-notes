@@ -1,0 +1,215 @@
+{
+  "notes": [
+    {
+      "id": "1779371191781",
+      "title": "新加坡服务器",
+      "content": "密码:\n3E015oTw2ZDy\nhost:\n23.251.34.29\n\nip:\nhttp://23.251.34.29:8000",
+      "category": "gpt",
+      "createdAt": "2026-05-21T13:46:31.781Z",
+      "updatedAt": "2026-05-22T05:18:23.663Z"
+    },
+    {
+      "id": "1779350447388",
+      "title": "注册机",
+      "content": "1、开源的 Gopay plus 注册机（非群主版本）：https://github.com/ywnd1144/Gopay_plus_automatic\n2、群主自研的 GPT free 协议注册机（适用于 Outlook 邮箱）：https://loveq.lanzn.com/i1IEF3pbkdfi\n需要的自取即可，有心的人自然觉得有用",
+      "category": "gpt",
+      "createdAt": "2026-05-21T08:00:47.389Z",
+      "updatedAt": "2026-05-21T08:02:35.567Z"
+    },
+    {
+      "id": "1779290910064",
+      "title": "2026.5.21要做的",
+      "content": "1. 方案论证\n2. 系统测试添加测试结果图，主要表格和图片的交叉引用，还有图片的序号\n3.数据分析页面的情感极性分析\n4. 把对话的大模型换成可配置的还有换成小米的模型",
+      "category": "毕设-古克文",
+      "createdAt": "2026-05-20T15:28:30.064Z",
+      "updatedAt": "2026-05-21T05:58:56.439Z"
+    },
+    {
+      "id": "1778812448509",
+      "title": "论文规范",
+      "content": "1. 摘要",
+      "category": "未分类",
+      "createdAt": "2026-05-15T02:34:08.509Z",
+      "updatedAt": "2026-05-15T02:34:26.390Z"
+    },
+    {
+      "id": "1778753268691",
+      "title": "文档状况",
+      "content": "1. 任务书\n2. 外文翻译",
+      "category": "未分类",
+      "createdAt": "2026-05-14T10:07:48.691Z",
+      "updatedAt": "2026-05-14T10:08:23.751Z"
+    },
+    {
+      "id": "1778599005654",
+      "title": "",
+      "content": "结合今天上课所学，利用jsp编写一个产品添加表单product.jsp，可以在该页面实现添加产品名称、价格和产地，添加的数据可以提交给后台Servlet，Servlet接收到数据后可以在suc.jsp页面上显示已提交的产品信息。\n代码：\nProduct.java\npackage com.neusoft.product;public class Product {    private String name;    private double price;    private String origin;    public Product() {    }    public Product(String name, double price, String origin) {        this.name = name;        this.price = price;        this.origin = origin;    }    public String getName() {        return name;    }    public void setName(String name) {        this.name = name;    }    public double getPrice() {        return price;    }    public void setPrice(double price) {        this.price = price;    }    public String getOrigin() {        return origin;    }    public void setOrigin(String origin) {        this.origin = origin;    }}\nProductServlet.java\npackage com.neusoft.product;import java.io.IOException;import javax.servlet.ServletException;import javax.servlet.http.HttpServlet;import javax.servlet.http.HttpServletRequest;import javax.servlet.http.HttpServletResponse;public class ProductServlet extends HttpServlet {    private static final long serialVersionUID = 1L;    @Override    protected void doGet(HttpServletRequest request, HttpServletResponse response)            throws ServletException, IOException {        response.sendRedirect(request.getContextPath() + \"/product.jsp\");    }    @Override    protected void doPost(HttpServletRequest request, HttpServletResponse response)            throws ServletException, IOException {        request.setCharacterEncoding(\"UTF-8\");        String name = request.getParameter(\"name\");        String priceText = request.getParameter(\"price\");        String origin = request.getParameter(\"origin\");        double price = Double.parseDouble(priceText);        Product product = new Product(name, price, origin);        request.setAttribute(\"product\", product);        request.getRequestDispatcher(\"/suc.jsp\").forward(request, response);    }}\nproduct.jsp\n<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" pageEncoding=\"UTF-8\"%><!DOCTYPE html><html><head><meta charset=\"UTF-8\"><title>添加产品</title><style>body {    font-family: \"Microsoft YaHei\", Arial, sans-serif;    margin: 40px;}form {    width: 420px;    padding: 24px;    border: 1px solid #dddddd;    border-radius: 8px;}.form-item {    margin-bottom: 16px;}label {    display: inline-block;    width: 90px;}input {    width: 240px;    height: 30px;    padding: 4px 8px;}button {    margin-left: 94px;    padding: 8px 24px;    cursor: pointer;}</style></head><body><h2>添加产品信息</h2><form action=\"<%=request.getContextPath()%>/addProduct\" method=\"post\">    <div class=\"form-item\">        <label for=\"name\">产品名称：</label>        <input type=\"text\" id=\"name\" name=\"name\" required>    </div>    <div class=\"form-item\">        <label for=\"price\">价格：</label>        <input type=\"number\" id=\"price\" name=\"price\" step=\"0.01\" min=\"0\" required>    </div>    <div class=\"form-item\">        <label for=\"origin\">产地：</label>        <input type=\"text\" id=\"origin\" name=\"origin\" required>    </div>    <button type=\"submit\">提交</button></form></body></html>\nsuc.jsp\n<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" pageEncoding=\"UTF-8\"%><%@ page import=\"com.neusoft.product.Product\" %><!DOCTYPE html><html><head><meta charset=\"UTF-8\"><title>提交成功</title><style>body {    font-family: \"Microsoft YaHei\", Arial, sans-serif;    margin: 40px;}table {    border-collapse: collapse;    width: 620px;    text-align: center;}th, td {    border: 1px solid #333333;    padding: 10px;}th {    background-color: #f2f2f2;}a {    display: inline-block;    margin-top: 18px;}</style></head><body><h2>产品提交成功</h2><%Product product = (Product) request.getAttribute(\"product\");if (product != null) {%><table>    <tr>        <th>产品名称</th>        <th>价格</th>        <th>产地</th>    </tr>    <tr>        <td><%=product.getName()%></td>        <td><%=product.getPrice()%></td>        <td><%=product.getOrigin()%></td>    </tr></table><%} else {%><p>暂无提交的产品信息。</p><%}%><a href=\"<%=request.getContextPath()%>/product.jsp\">返回继续添加</a></body></html>\nweb.xml\n<?xml version=\"1.0\" encoding=\"UTF-8\"?><web-app xmlns=\"http://xmlns.jcp.org/xml/ns/javaee\"    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"    xsi:schemaLocation=\"http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd\"    version=\"3.1\">    <display-name>ProductTableHomework</display-name>    <servlet>        <servlet-name>productServlet</servlet-name>        <servlet-class>com.neusoft.product.ProductServlet</servlet-class>    </servlet>    <servlet-mapping>        <servlet-name>productServlet</servlet-name>        <url-pattern>/addProduct</url-pattern>    </servlet-mapping>    <welcome-file-list>        <welcome-file>product.jsp</welcome-file>    </welcome-file-list></web-app>\n",
+      "category": "未分类",
+      "createdAt": "2026-05-12T15:16:45.654Z",
+      "updatedAt": "2026-05-12T15:16:46.283Z"
+    },
+    {
+      "id": "1778560934144",
+      "title": "业务人员工具",
+      "content": "getSystemTaskCount\n用途：查询任务总数\n返回：当前账号采集任务总量\n\ngetAbnormalTaskCount\n用途：查询近 24 小时异常任务数\n返回：当前账号异常任务统计值\n\nlistTasks(platformCode)\n用途：列出采集任务\n参数：\nplatformCode：平台编码，可为空；为空时查询全部任务\n返回：当前账号任务列表及其运行信息\n\ncreateTask(name, code, cron, keyword)\n用途：创建新的采集任务\n参数：\nname：任务名称\ncode：任务编码\ncron：Cron 表达式\nkeyword：采集关键词\n返回：创建结果摘要\n风险：属于新增调度动作，应结合系统概况确认资源状态\n\nupdateTask(id, name, cron, keyword)\n用途：修改现有任务\n参数：\nid：任务 ID\nname：任务名称\ncron：Cron 表达式\nkeyword：采集关键词\n返回：更新结果摘要\n\n\ntriggerTask(nameOrId)\n用途：立即触发任务执行\n参数：\nnameOrId：任务名称或任务 ID\n返回：触发结果\n风险：属于主动干预调度\n\nstartTask(nameOrId)\n用途：启动任务\n参数：\nnameOrId：任务名称或任务 ID\n返回：启动结果\n\nstopTask(nameOrId)\n用途：停止任务\n参数：\nnameOrId：任务名称或任务 ID\n返回：停止结果\n\n\ngetTaskLogs(nameOrId)\n用途：查看任务执行日志\n参数：\nnameOrId：任务名称或任务 ID\n返回：该任务最近执行日志\n\nsearchRawData(keyword, platform, dataType)\n用途：搜索原始数据\n参数：\nkeyword：关键词\nplatform：平台编码或平台名\ndataType：数据类型\n返回：原始数据搜索结果摘要\n\nsearchCleanData(keyword, platform, dataType)\n用途：搜索清洗数据\n参数：\nkeyword：关键词\nplatform：平台编码或平台名\ndataType：数据类型\n返回：清洗数据搜索结果摘要\n\nexportRawData(keyword, platform, format)\n用途：导出原始数据\n参数：\nkeyword：关键词\nplatform：平台\nformat：导出格式，通常为 excel 或 json\n返回：导出结果或导出链接/提示\n\nexportCleanData(keyword, platform, format)\n用途：导出清洗数据\n参数：\nkeyword：关键词\nplatform：平台\nformat：导出格式，通常为 excel 或 json\n返回：导出结果或导出链接/提示\n\n4.7 情感分析相关能力\ngetKeywordHeat(platformCode, hours, limit)\n用途：查询关键词热度排行\n参数：\nplatformCode：平台编码\nhours：时间窗口\nlimit：返回条数\n返回：热度排行摘要\n\ngetSentimentDistribution(platformCode, keyword)\n用途：查询指定关键词的情感分布\n参数：\nplatformCode：平台编码\nkeyword：关键词\n返回：正向/中性/负向等分布情况\n\ngetSentimentRecords(platformCode, keyword)\n用途：查询情感分析记录\n参数：\nplatformCode：平台编码\nkeyword：关键词\n返回：分析记录列表摘要",
+      "category": "毕设-古克文",
+      "createdAt": "2026-05-12T04:42:14.144Z",
+      "updatedAt": "2026-05-12T04:50:02.163Z"
+    },
+    {
+      "id": "1778560547360",
+      "title": "管理员工具",
+      "content": "工具明细\n4.1 系统概况与服务监控\ngetSystemOverview\n用途：查询平台整体系统概况\n返回：用户数、平台数、任务数、异常情况等整体摘要\n适用场景：管理员询问\"系统现在整体运行怎么样\"时使用\n\ngetSystemUserCount\n用途：查询系统用户总数\n返回：当前平台注册用户总量\n\ngetSystemPlatformCount\n用途：查询已接入平台总数\n返回：平台配置数量或活跃平台数量\n\ngetSystemTaskCount\n用途：查询任务总数\n返回：当前采集任务总量\n\ngetAbnormalTaskCount\n用途：查询近 24 小时异常任务数\n返回：异常任务统计值\n\ngetServiceHealth\n用途：查看服务健康状态总览\n返回：各服务当前健康状态摘要\n\ngetUnhealthyServices\n用途：筛出异常服务\n返回：状态异常、不可用或不健康的服务列表\n\ngetServiceLatency\n用途：查看服务延迟情况\n返回：服务调用延迟、响应耗时等监控信息\n\ngetServiceInstanceHealth\n用途：查看服务实例健康分布\n返回：各实例正常/异常数量\n\n4.2 运行指标与吞吐分析\ngetThroughputCount\n用途：查询近 24 小时数据吞吐量\n返回：采集/处理/写入相关吞吐统计\n\ngetTotalTaskRuns\n用途：查询近 24 小时任务执行总次数\n返回：任务调度执行总量\n\ngetSuccessTaskRuns\n用途：查询近 24 小时成功执行次数\n返回：执行成功次数统计\n\ngetTaskSuccessRate\n用途：查询近 24 小时任务成功率\n返回：成功率百分比\n\ngetAvgProcessingSeconds\n用途：查询近 24 小时平均处理耗时\n返回：平均处理秒数/时延指标\n\ngetAdminOverview\n用途：综合汇总管理员视角关键运行指标\n返回：可用于总览面板的一组核心指标摘要\n\ngetTopicBacklog\n用途：查看消息队列积压情况\n返回：如 collect/process/sink 等主题的 backlog 信息\n适用场景：排查\"数据处理变慢\"\"链路堵塞\"等问题\n\n4.3 日志与近期活动\ngetRecentFailedTasks\n用途：查询近期失败任务\n返回：失败任务列表、失败时间、可能的失败原因摘要\n\ngetRecentLogs\n用途：查询近期系统日志\n返回：最近一批系统日志记录\n适用场景：管理员追查近期故障\n\ngetRecentActivity\n用途：查看近期系统活动\n返回：失败任务、系统日志、关键活动的综合摘要\n\n4.4 平台采集与排行分析\ngetPlatformVolumeRanking\n用途：查看各平台采集量排行\n返回：按采集量排序的平台列表\n\ngetTopPlatform\n用途：查询采集量最高的平台\n返回：Top 1 平台信息\n\n4.5 任务管理与任务调度\nlistTasks(platformCode)\n用途：列出采集任务\n参数：\nplatformCode：平台编码，可为空；为空时查询全部任务\n返回：任务列表及其运行信息\n\ncreateTask(name, code, cron, keyword)\n用途：创建新的采集任务\n参数：\nname：任务名称\ncode：任务编码\ncron：Cron 表达式\nkeyword：采集关键词\n返回：创建结果摘要\n风险：属于新增调度动作，应结合系统概况确认资源状态\n\nupdateTask(id, name, cron, keyword)\n用途：修改现有任务\n参数：\nid：任务 ID\nname：任务名称\ncron：Cron 表达式\nkeyword：采集关键词\n返回：更新结果摘要\n\ntriggerTask(nameOrId)\n用途：立即触发任务执行\n参数：\nnameOrId：任务名称或任务 ID\n返回：触发结果\n风险：属于主动干预调度\n\nstartTask(nameOrId)\n用途：启动任务\n参数：\nnameOrId：任务名称或任务 ID\n返回：启动结果\n\nstopTask(nameOrId)\n用途：停止任务\n参数：\nnameOrId：任务名称或任务 ID\n返回：停止结果\n\ngetTaskLogs(nameOrId)\n用途：查看任务执行日志\n参数：\nnameOrId：任务名称或任务 ID\n返回：该任务最近执行日志\n\n4.6 数据查询与数据导出\ngetCollectionTrend\n用途：查看近 24 小时采集趋势\n返回：趋势统计摘要\n\nsearchRawData(keyword, platform, dataType)\n用途：搜索原始数据\n参数：\nkeyword：关键词\nplatform：平台编码或平台名\ndataType：数据类型\n返回：原始数据搜索结果摘要\n\nsearchCleanData(keyword, platform, dataType)\n用途：搜索清洗数据\n参数：\nkeyword：关键词\nplatform：平台编码或平台名\ndataType：数据类型\n返回：清洗数据搜索结果摘要\n\ngetDataKeywords\n用途：查询系统中可选关键词列表\n返回：关键词清单\n\ngetDataPlatforms\n用途：查询系统中可选平台列表\n返回：平台清单\n\nexportRawData(keyword, platform, format)\n用途：导出原始数据\n参数：\nkeyword：关键词\nplatform：平台\nformat：导出格式，通常为 excel 或 json\n返回：导出结果或导出链接/提示\n\nexportCleanData(keyword, platform, format)\n用途：导出清洗数据\n参数：\nkeyword：关键词\nplatform：平台\nformat：导出格式，通常为 excel 或 json\n返回：导出结果或导出链接/提示\n\n4.7 情感分析相关能力\ngetKeywordHeat(platformCode, hours, limit)\n用途：查询关键词热度排行\n参数：\nplatformCode：平台编码\nhours：时间窗口\nlimit：返回条数\n返回：热度排行摘要\n\ngetSentimentDistribution(platformCode, keyword)\n用途：查询指定关键词的情感分布\n参数：\nplatformCode：平台编码\nkeyword：关键词\n返回：正向/中性/负向等分布情况\n\ngetSentimentRecords(platformCode, keyword)\n用途：查询情感分析记录\n参数：\nplatformCode：平台编码\nkeyword：关键词\n返回：分析记录列表摘要\n\ntriggerSentimentAnalysis\n用途：手动触发情感分析流程\n返回：触发结果\n\n风险：属于主动执行分析任务\n4.8 平台配置管理\nlistPlatforms\n用途：列出当前活跃平台配置\n返回：平台配置列表\n\ncreatePlatform(code, name)\n用途：新增平台配置\n参数：\ncode：平台编码\nname：平台名称\n返回：创建结果摘要\n\n4.9 用户管理\nlistUsers\n用途：查询用户列表\n返回：系统用户清单\n\ncreateUser(name, email, role)\n用途：创建用户\n参数：\nname：用户名/姓名\nemail：邮箱\nrole：角色，通常为 admin / business / customer\n返回：创建结果，通常包含初始密码或初始化提示\n\nupdateUserRole(userNameOrId, role)\n用途：修改用户角色\n参数：\nuserNameOrId：用户名或用户 ID\nrole：目标角色\n返回：修改结果摘要\n\n4.10 大模型配置与连通性检测\ngetLlmConfig\n用途：查询当前大模型配置\n返回：模型配置摘要\n\ncheckLlmStatus\n用途：检测大模型服务状态\n返回：连接是否正常、调用是否可用等结果\n",
+      "category": "毕设-古克文",
+      "createdAt": "2026-05-12T04:35:47.360Z",
+      "updatedAt": "2026-05-12T04:43:59.366Z"
+    },
+    {
+      "id": "1778468385113",
+      "title": "chat gpt plus",
+      "content": "xiaogukeai+shopping@outlook.com\nxiaogukeai+shoppingcat@outlook.com\nxiaogukeai+shoppingone@outlook.com //要电话\nxiaogukeai+work@outlook.com\nMrsSara455313@outlook.com\nCameronMartinez364974@outlook.com//要电话\n\n\n",
+      "category": "技术",
+      "createdAt": "2026-05-11T02:59:45.113Z",
+      "updatedAt": "2026-05-12T04:35:54.531Z"
+    },
+    {
+      "id": "1778328549763",
+      "title": "部署相关",
+      "content": "root@iv-ye4us7axogcva4gb45sh:~# docker run -d \\\n  --name my-mysql \\\n  -e MYSQL_ROOT_PASSWORD=StrongPassword123 \\\n  -e MYSQL_DATABASE=mydb \\\n  -e MYSQL_USER=myuser \\\n  -e MYSQL_PASSWORD=myuserpass \\\n  -p 3306:3306 \\\n  -v mysql_data:/var/lib/mysql \\\n  mysql:8.0\n",
+      "category": "未分类",
+      "createdAt": "2026-05-09T12:09:09.763Z",
+      "updatedAt": "2026-05-09T12:09:18.391Z"
+    },
+    {
+      "id": "1778163843522",
+      "title": "",
+      "content": "sudo mkdir -p /etc/docker\nsudo tee /etc/docker/daemon.json <<-'EOF'\n{\n  \"registry-mirrors\": [\n    \"https://docker.1ms.run\",\n    \"https://docker.m.daocloud.io\",\n    \"https://proxy.vvvv.ee\",\n    \"https://dkproxy.linzefeng.top\",\n    \"https://hub.mirrorify.net\"\n  ]\n}\nEOF\n",
+      "category": "未分类",
+      "createdAt": "2026-05-07T14:24:03.522Z",
+      "updatedAt": "2026-05-07T14:28:14.984Z"
+    },
+    {
+      "id": "1778050010986",
+      "title": "最新目录",
+      "content": "摘    要\tI\nAbstract\tII\n第1章  绪论\t \n1.1  背景分析\t\n1.2  研究目的和意义\t\n1.3  国内外研究现状\t\n1.4  研究内容\t\n第2章  方案论证\t \n2.1  方案提出\t \n2.2  可行性分析\t \n2.2.1  技术可行性\t \n2.2.2  经济可行性\t \n2.2.3  操作可行性\t \n2.2.4  法律可行性\t \n2.3  方案论证\t \n2.3.1  前端框架的选择\t \n2.3.2  数据库选择\t \n2.3.3  后端框架的选择\t \n2.4  方案确定\t \n第3章  需求分析\t \n3.1  总体目标\t\n3.2  用户需求分析\n3.3  功能需求分析\t\n3.3.1 系统功能分析\t\n3.3.2 系统分析类图\t\n3.4  数据分析\t\n3.4.1  数据流分析\t\n3.4.2  数据字典\t\n3.5  性能分析\t\n第4章  设计论述\t \n4.1  概要设计\t\n4.1.2  系统总体架构设计\t\n4.1.2  总体功能模块设计\t\n4.1.3  功能流程设计\t\n4.2  数据库设计\t\n4.2.1 数据库概念结构设计\t\n4.2.2  数据库物理结构设计\t\n4.3.3  MongoDB 集合设计\t\n4.3  详细设计与实现\n4.3.1 注册与登录模块\t\n4.3.2 用户管理模块\t\n4.3.3 平台配置管理模块\t\n4.3.4 采集任务管理模块\t\n4.3.5 数据清洗与持久化模块\t\n4.3.6 系统监控模块\n4.3.7 数据查询模块\t\n4.3.8 情感分析与 LLM 配置模块\t\n4.3.9 AI 智能助手模块\t\n第5章  系统测试与结果分析\t \n5.1 测试导图\n5.2 单元测试（以函数、类、模块数据等作为测试对象，使用白盒测试方法）\n5.3 系统功能测试（使用黑盒测试方法，工具如QuickTestProfessional）\n5.4 系统性能测试（工具如jemeter）\n5.5 系统测试报告\n结    论\t\n致    谢\t\n参考文献\t \n附    录",
+      "category": "未分类",
+      "createdAt": "2026-05-06T06:46:50.986Z",
+      "updatedAt": "2026-05-06T09:42:33.400Z"
+    },
+    {
+      "id": "1778044168544",
+      "title": "临时",
+      "content": "一份好的提示词，核心就是把你脑里的详细画面翻译成文字。具体来说，写清楚以下内容：\n动画类型/视频类型：功能演示、数据可视化、发布会预告、社媒短片等\n时长和画幅：例如 10 秒、9:16 抖音画幅等\n视频目标：一句话说明这个视频要讲什么、让观众理解什么\n视觉风格：例如 Apple 风格、真实软件界面、极简科技感、电影感等\n关键元素：必须出现的文字、图标、产品、数据、人物、素材路径等\n动效要求：例如流式打字、淡入淡出、缩放转场、卡片展开、镜头推进等\n声音要求：例如配乐、打字声、点击声、旁白、音效同步等\n举个例子，这是我做一段苹果手机进化史视频开场时用的 prompt：用 [@HyperFrames] 做一个能说明 \"Codex 调用 HyperFrames 生成视频\" 的开场动画，默认画幅，时间不超过 10s。 #动画类型 + 时长画幅\n目标是展示\"我在 Codex 里用 HyperFrames 生成视频\"的过程。 #视频目标\n画面从真实感的 Codex 深色聊天首页开始，中央是 \"What should we work on?\"，下方是大号输入框。输入框里从第一个字开始像真人打字一样流式输入： \"帮我用 HyperFrames by HeyGen 做一个 iPhone 历代机型的展示动画\" 其中 \"HyperFrames by HeyGen\" 要像插件 mention/chip 一样显示，带小图标，并和普通输入文字有明显区分。 #关键元素 + 动效要求\n输入完成后点击发送，进入生成状态：画面中央出现 Codex 图标 × HyperFrames 图标，下方显示 \"GENERATING ...\"。这个阶段要有轻微的生成中动效，比如图标轻微呼吸、跳动或震动，点点闪烁，但整体要克制、有产品感。 #关键元素 + 动效要求\n生成完成后回到 Codex 聊天界面，出现一个视频预览卡片。卡片封面是 Apple 风格的深色产品预览，中央有 Apple 标志和播放按钮。鼠标点击播放按钮后，视频卡片丝滑放大到全屏，像正式视频被打开一样，作为进入后续视频的转场。 #关键元素 + 动效要求\n整体风格要拟真、克制、高级，接近真实 Codex 产品界面和 Apple 发布片里的软件操作镜头。界面切换用平滑的 fade in / fade out，所有动效都要清爽、利落、自然。 #视觉风格\n请使用 HyperFrames 实现，并确保可以稳定 render 成 MP4。打字、点击和 generating 的声音要作为真实音轨接入，不能只用浏览器实时音效。 #声音要求\n\n\n2、图片生成：用Image Gen skill 来生成关键素材\n做视频通常会花很多时间在准备视觉素材上——产品图、封面图、关键帧画面等。\nCodex 内置了 GPT Image 2，可以直接在项目里生成你需要的素材，效果精美，风格可控。\n触发方法：输入 $image-gen\n例如：用 $image-gen 的gpt image 2 帮我分别生成一个 iPhone 初代的正面图和背面图，可以参考官方手机图片素材，尽可能模拟真实手机模样。注意图片最好是透明的，好随意融入任意背景。\n\n3、配乐生成：用 AI 直接生成背景音乐\n视频做完了，配乐方面如何解决？\n推荐Suno（suno.com）这个 AI 配乐生成网站，每天有免费额度，一次生成还会提供 2 个不同的歌曲版本，整体生成质量不错。\n\n",
+      "category": "未分类",
+      "createdAt": "2026-05-06T05:09:28.544Z",
+      "updatedAt": "2026-05-08T14:29:30.504Z"
+    },
+    {
+      "id": "1778031121872",
+      "title": "Mac 快捷键",
+      "content": "进入 / 退出全屏切换：Control + Command (⌘) + F\n关闭窗口：Command + W\n最小化：Command + M",
+      "category": "工作",
+      "createdAt": "2026-05-06T01:32:01.872Z",
+      "updatedAt": "2026-05-06T01:32:11.964Z"
+    },
+    {
+      "id": "1777957722901",
+      "title": "减少 AIGC提示词",
+      "content": "# Role: 论文润色助手\n\n## Profile\n\n- author: linux.do\n- version: 1.0\n- language: 中文\n- description: 本角色专注于对用户提供的中文学术或技术原文进行专业改写，目标是使文本更具解释性、逻辑性和系统性，以区别于AI所做的文章。改写过程中严格保持原文技术准确性与逻辑结构，确保风格严谨、表达自然、控制字数与原文基本一致，避免口语化和风格夸张。\n\n## Skills\n\n- 运用多层次语言扩展策略，将简洁表达转化为具备动作过程和逻辑链条的句式，增强解释性。\n\n  1. ##### 增加冗余与解释性（Verbose Elaboration）：\n\n- 精通系统性替换规则，确保语言一致性与风格统一：\n\n  - 动词短语扩展：将简洁的动词或动词短语替换为更长的、带有动作过程系统描述的短语（如“处理”→“去处理…工作”，“恢复”→“进行恢复”，“实现”→ “得以实现” ，“配置” → “进行配置”）\n  - 增加辅助词/结构： 在句子中添加语法上允许但非必需的词语，使句子更饱满（如“提供功能” →“具有...功能” 或 “拥有...功能”，增加 “了”、“的”、“地”、“所”、“会”、“可以”、“方面”、“其中” 等）\n\n  ##### 2.系统性词汇替换（Systematic Synonym/Phrasing Substitution）\n\n  - 系统性同义替换：即特定动词/介词/连词替换： 将原文中常用的某些词汇固定地替换为特定的替代词。（如“通过”→“借助”，“利用”→“凭借”，“采用/ 使用 ”->“ 运用 / 选用” ，“基于” -> “鉴于 / 基于...来开展/ 凭借”，“ 通过” -> “借助 / 依靠 / 凭借”）\n  - 名词/形容词替换（如“特点”→“特性”，“原因”→“缘由”）\n\n  ##### 3.括号内容处理（Bracket Content Integration/Removal）\n\n- 善用解释性括号整合技术，使缩略语与示例自然嵌入文本，不破坏句式逻辑：\n\n  优先整合： 尝试将括号内的信息自然地融入句子，使用“即”、“比如”、“例如” 等引导词。 \n\n  示例：ORM（对象关系映射） -> 对象关系映射即ORM 或 ORM也就是对象关系映射，功能（如ORM、Admin） -> 功能，比如ORM、Admin 或 功能，像ORM、Admin等 \n\n  谨慎省略： 如果整合后语句极其冗长或别扭，并且括号内容并非核心关键信息（例如，非常基础的缩写全称），可以考虑省略。但要极其小心，避免丢失重要上下文或示例。 在提供的范例中，有时示例信息被省略，你可以模仿这一点，但要判断是否会损失过多信息。 \n\n  代码/标识符旁括号： 对于紧跟在代码、文件名、类名旁的括号，通常直接移除括号。 示例：视图 (views.py) 中 -> 视图也就是views.py中 示例：权限类 (admin_panel.permissions) -> 权限类 admin_panel.permissions``\n\n  ##### 4.内容优化与处理（Content optimization and processing）\n\n- 熟练调整句式结构与节奏，提升句子系统性与表达完整性，包含：\n\n  - 条件句自然化处理（如“若…，则…”→“如果…，就…”）\n  - 名词动词结构切换（如“为了将…解耦”→“为了实现…的解耦”）\n  - 合理添加连接词/语气词（如“那么”“同时”）以增强条理与承接。\n\n- 严格保持原文技术内容、术语、代码路径不变，避免逻辑误改或语义漂移。\n\n## Rules\n\n1. 禁用第一人称与口语表达（如“xxx呢”）。\n2. 字数控制在与原文基本一致的范围内。\n3. 所有技术术语、路径、配置项绝对必须原样保留。\n4. 风格要求专业、解释性强、系统清晰，避免随意添加主观推断。\n5. 统一使用系统性替换词汇与表达结构（如将“和”统一替换为“以及”）。\n6. 括号内容应优先整合入句，确保语言自然、逻辑顺畅。\n7. 鼓励采用“把”字句、“如果…就…”等表达形式，增强语言自然度。\n8. 必须保留原文核心逻辑与事实，不得进行推理性改写。\n\n## Workflows\n\n1. 接收原文，分析技术术语、表达风格与逻辑结构。\n2. 执行润色策略：增加冗余与解释性、括号内容处理、句式微调与学术口语化倾向、保持技术准确性。\n3. 在保持技术信息不变的前提下控制字数等量，完成专业表达优化。\n4. 输出润色文本，标注改写亮点，确保满足全部规则要求。\n\n## Init\n\n欢迎使用“论文润色助手”，请提供需要改写的学术或技术类中文原文。我将根据专业规则对其进行重写，使其风格更系统、内容更具解释性，并确保术语准确、逻辑清晰。",
+      "category": "毕设-古克文",
+      "createdAt": "2026-05-05T05:08:42.901Z",
+      "updatedAt": "2026-05-06T06:31:23.633Z"
+    },
+    {
+      "id": "1777924409853",
+      "title": "参考文献",
+      "content": "\n[12] Liu C J 等：Kafka + Kubernetes + 事件驱动数据处理系统，适合支撑“国外在分布式数据处理平台方面起步较早”\n[14] Na J 等：基于微服务的大数据处理平台，适合支撑“国外在微服务平台架构方面研究较成熟”\n[7] Yang Y：消费者评论情感分析，适合支撑“国外在智能分析和情感分析方面研究较深入”\n\n\n[13] 侯阔，殷晓磊：微服务架构在大数据管理平台中的应用，适合写国内早期相关研究\n[5] 韩世平等：基于微服务架构的多源异构数据实时处理平台设计，和你的题目最贴近\n[6] 陈香：基于Kafka及微服务架构的平台设计，适合支撑消息队列与微服务结合\n[11] 王艺静：基于微博舆情事件的主题情感分析研究，适合支撑情感分析方向 https://seclink.bytedance.com/?target=https%3A%2F%2Fpaperpure.net%2F%3Ficode%3D2LB4QYUB&app_version=38.4.0&lang=zh&scene=im&device_id=3367148127539019&app_id=1128&aid=1128&jumper_version=1&seclink_verion=1.1.0&device_platform=iphone&os_name=iOS&did=3367148127539019&app_version=38.4.0&channel=App%20Store&biz_id=AnnieX&device_platform=iOS📢完全免费—白嫖攻略（超简单）@所有人 \n❗️邀请好友的方式白嫖\n👂让朋友扫你专属二维码或者链接即可\n😘5个朋友➕群里的免费福利，免费字数足够一篇本科论文。\n🌄本周福利兑换码：N5YJNADPNV4VXTXX\n👏没领的抓紧噢\n🧑‍🤝‍🧑邀请方式如下：",
+      "category": "毕设-古克文",
+      "createdAt": "2026-05-04T19:53:29.853Z",
+      "updatedAt": "2026-05-05T04:31:51.806Z"
+    },
+    {
+      "id": "1777905259265",
+      "title": "系统实现",
+      "content": "\n5.1 数据采集模块实现\n\nXXL-JOB 定时任务注册与触发流程（贴关键代码片段）\nHTTP 请求执行、JSON 解析、数据写入 MongoDB 的实现\n去重机制的实现方式\n5.2 数据清洗与处理模块实现\n\n消费 Kafka 消息的实现\n清洗规则（字段过滤、格式化、脏数据剔除）的核心代码\n5.3 情感分析模块实现\n\n调用 LLM API 的实现（请求封装、响应解析）\n情感结果写入 MongoDB 的流程\n5.4 用户与权限管理实现\n\nJWT 生成与校验的核心代码\n拦截器中角色权限判断逻辑\n\n5.5 AI 智能助手实现\n\nLangChain4j 集成配置（AIService 注册、Tool 绑定）\nSSE 流式输出的实现\n对话历史存储与会话管理\n5.6 系统界面展示\n\n截几张关键页面截图（登录页、Dashboard、任务管理、数据查询、AI对话）\n每张图下面写1~2句功能说明",
+      "category": "毕设-古克文",
+      "createdAt": "2026-05-04T14:34:19.265Z",
+      "updatedAt": "2026-05-04T15:11:01.450Z"
+    },
+    {
+      "id": "1777821811292",
+      "title": "毕设论文提示词",
+      "content": "1. 摘要\n毕业设计摘要\n逻辑流程：\n1.背景与问题(研究目的):为什么要写这个?目前存在什么问题或不足?\n2.研究对象与方法(如何研究):针对这个问题，你用了什么理论、模型、数据、算法或实验手段?\n3.主要结果/发现(看到了什么):通过研究，你得到了哪些关键数据、现象或规律?(这部分是摘要的核心)\n4.结论与意义(说明了什么):这些结果说明了什么?有什么实际应用价值或理论贡献?书写模板：\n第1句(背景):随着......的发展，......在......领域扮演着越来越重要的角色。然而，传统的......方法在应对......时存在......的不足。\n第2句(目的):针对......问题，提出了......的解决方法。\n第3句(方法):系统利用......方法(如问卷调查、有限元分析、实证研究)，通过对......数据的处理，分析了......\n第4句(结果):研究结果表明:......(具体数据或现象，如\"A因素对B的影响显著，相关系数达到0.8\"或\"改进后的算法使运行效率提升了20%\")。\n第5句(结论/意义):研究结果为XX进行......提供了理论参考/实践指导，对......具有一定的借鉴意义。\n举例：\n(背景)随着社交媒体的普及，微博平台已成为舆情产生与传播的主要阵地，如何从海量短文本中快速识别公众情感倾向成为研究热点。(目的)针对传统关键词监测无法准确判断情感极性的问题，设计并实现了一套基于情感分析的微博舆情监测系统。(方法)系统利用网络爬虫采集指定话题的微博数据，采用基于深度学习的情感分类算法对文本进行情感极性判定，并通过可视化图表展示舆情演化趋势。(结果)实验结果表明，该模型在测试集上的情感分类准确率达到92.5%，较传统方法提高了约8个百分点。(结论)研究结果为政府及企业进行网络舆情管控与危机公关提供了数据支持。\n注意:用第三人称写，不能使用第一人称\"本文\"\"作者\"\"本研究\"\n仔细查看智能云图库系统的实现，根据这个模板帮我写毕设论文的摘要，字数控制在 200-300 字。\n\n2.研究背景\n研究背景(用1-2段说明研究背景)\n随着......的快速发展，......在中扮演着越来越重要的角色。然而在过在去。人们对的理解仅限于......,这导致了一系列的问题，例如为了解决这些问题,本文旨在通过研究方法,深人探讨并提出解决方案该研究的意义在于增进对的认识和理解，在领域中做出重要贡献推动领域的持续发展，促进的向好发展。解下来是课题背景，按照我的系统，根据这个模板写，字数控制在 300 字左右。\n\n3.国内外动态\n1. 国内动态\n在国内，随着互联网经济的快速发展以及消费者对甜品需求的不断增多，甜品蛋糕制作预订销售管理系统的研究和应用有了较大进步，2024年中国烘焙食品行业拥有庞大的市场规模，这使得众多甜品商家积极探索数字化转型，以此提升运营效率和客户体验，众多企业参与到相关系统的研发和应用中。比如好利来作为国内知名的烘焙品牌，它自主研发的预订销售管理系统效果良好，该系统整合了线上线下销售渠道，顾客可凭借官网、小程序方便地预订蛋糕，选择口味、尺寸、配送时间等个性化服务，在制作环节，系统可以准确地将订单信息传输到后厨，达成标准化生产流程管理，有效降低制作差错。借助对销售数据的分析，好利来可了解消费者偏好，像在一线城市，抹茶口味蛋糕订单占比达三分之一，基于此，好利来针对性地推出更多抹茶系列新品，另外一些区域性连锁甜品店，如元祖食品，借助第三方开发的管理系统，实现了库存管理与预订销售的一体化，大大优化了企业运营成本与收益。此外，从20世纪80年代至今，几乎中国所有县级以上城市都有至少几十家专门售卖面包、蛋糕、甜品等的烘焙店[2]。\n2.国外动态\n国际甜品蛋糕行业的预定销售管理系统发展已具备较高技术成熟度，其中美国市场表现尤为突出。西方人喜欢蛋糕、面包等甜品，部分国家还有喝下午茶的习惯[3]。NPD Group 2023年度数据显示，美国烘焙食品线上销售额已占据整体市场的30%，并呈现持续增长态势。以星巴克为代表的跨国企业通过移动应用程序实现了甜品预定与咖啡销售的协同整合，该系统不仅能够基于门店库存和订单数据进行智能化资源调度，还通过消费数据分析构建用户画像，进而实施时段性组合营销策略。欧洲市场方面，英国Pret A Manger采用的全流程数字化管理系统具备多重功能：支持最长7天的甜品预约定制服务，实时监控原料库存并在低于安全阈值时自动发起采购指令。值得注意的是，法国中小型传统甜品店通过本土化管理系统创新性地将线上预定与线下自提服务相结合，在保持传统手工制作工艺优势的同时，成功实现了数字化转型，为区域消费者提供了兼具便捷性与品质保障的消费体验。这是其他论文国内外研究现状，参考这个，根据我的系统写。\n\n\n4.研究意义\n研究意义(分理论意义和现实意义)\n理论意义上，本文可以弥补当前领域对该研究的不足之处，扩充领域的内容推进相关问题的解决。对于问题，本文从.....的角度展开分析，运用理论分析问题，采用了创新性的方式解决了......的难题，实破传统的思维模式从.....的角度去研究问题，使的研究能从一个新的角度展开，有利于对于.....研究的深人拓展，对于教学/应用/实践也有一定的启示。本文的研腽绮究结果揭示了.....规律，完善了.......理论方法，推动了......的应用与实践促进了.....发展，具有重要的科学意义和社会意义。\n现实意义上，本研究采用的研究方法，通过深人分析来探究......(研究主题)的现状和存在的问题,以此为基础提供相应的策略建议。本文以......和......两个概念作为出发点，从的外在表现入手，揭示其内在成因和实质，并通过使用方法A、方法B和方法C等三个层次的解决措施来解决问题。通过对前期理论研究的综述，本研究深人分析了......(研究问题),进一步厘清......(大的研究主题领域)存在的共性问题以及本篇论文研究主题所涉及的个性问题。这种综合分析有助于我们从不同范围和视角出发，总结经验并推经验以提高水平、缓解严峻的压力为目标:具有重要的现实意义另外，本研究还能够保证的持续性和有效性，对于保障权益、提升水平和构建的和谐社会具有重要意义。因此，本研究不仅在探索......中，在机制并提出优化策略方面具有意义，而且为实现的可持续发展提供了有力支持,具备重要的现实章义。参考我的系统，根据这个模板写研究意义。字数控制在 500 字左右。\n\n5.致谢\n帮我写一下致谢部分。字数控制在 600 字左右。\n\n6.方案论证\n方案论证\n1. 方案提出\n2.方案选择\n2.1 开发语言选择\n2.2 框架选择\n2.3 开发工具选择：IntelliJ IDEA等等，方案提出有两个参考：1. 本研究提出两种技术实现方案：方案一基于SpringBoot框架与MySQL数据库构建，开发环境选用IntelliJ IDEA集成开发工具，采用Java作为主要编程语言；方案二同样采用SpringBoot框架但搭配Oracle数据库，开发工具切换为Eclipse平台，仍以Java为开发语言。2.园林养护系统的开发方案：\n方案一：SpringBoot、Java、MybatisPlus、MySQL、IDEA、Vue；\n方案二：SSM、Python、Mybatis、Oracle、Eclispe、React；最后保留方案提出和几个你认为主要的方案选择即可。方案提出简写，每种方案 200-300 字。仔细分析我的系统，提供方案论证。\n\n7.可行性分析\n可行性分析：\n1.技术可行性分析\n2.经济可行性分析\n3.操作可行性分析\n4.法律可行性分析 根据我的系统写，每点控制在 280 字以内即可。\n\n8.方案确定\n最后写方案确定，300 字左右\n\n9.用例图模板\n@startuml\nleft to right direction\n\nskinparam monochrome true\nskinparam shadowing false\nskinparam actorStyle stick\nskinparam usecaseBorderColor black\nskinparam usecaseBackgroundColor white\nskinparam actorBorderColor black\nskinparam actorBackgroundColor white\n\nactor 管理员\n\n\n  (用户信息管理)\n  (个人信息管理)\n  (园林规划管理)\n  (物资库存管理)\n  (弹窗提醒管理)\n  (系统管理)\n\n\n管理员 --> (用户信息管理)\n管理员 --> (个人信息管理)\n管理员 --> (园林规划管理)\n管理员 --> (物资库存管理)\n管理员 --> (弹窗提醒管理)\n管理员 --> (系统管理)\n\n@enduml\n\n",
+      "category": "毕设-王春迎",
+      "createdAt": "2026-05-03T15:23:31.292Z",
+      "updatedAt": "2026-05-04T05:59:49.033Z"
+    },
+    {
+      "id": "1777779050919",
+      "title": "毕设画图",
+      "content": "1.用例图（需求分析阶段）\n2.流程图（对于一些复杂的业务用例）\n3.架构图（系统设计阶段）\n4.功能模块图（系统设计阶段）\n5.数据流图（系统设计阶段）\n6.ER 图（数据库设计阶段）\n7.三线图（数据库设计阶段）\n\n<mxfile host=\"app.diagrams.net\" agent=\"Codex\">\n  <diagram id=\"class-diagram\" name=\"系统分析类图\">\n    <mxGraphModel dx=\"1144\" dy=\"586\" grid=\"1\" gridSize=\"10\" guides=\"1\" tooltips=\"1\" connect=\"1\" arrows=\"1\" fold=\"1\" page=\"1\" pageScale=\"1\" pageWidth=\"1169\" pageHeight=\"827\" math=\"0\" shadow=\"0\">\n      <root>\n        <mxCell id=\"0\" />\n        <mxCell id=\"1\" parent=\"0\" />\n        <mxCell id=\"u_h\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;fontStyle=1;align=center;verticalAlign=middle;fillColor=#ffffff;strokeColor=#000000;\" value=\"User\" vertex=\"1\">\n          <mxGeometry height=\"30\" width=\"180\" x=\"470\" y=\"20\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"u_a\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+username: String&#xa;+password: String&#xa;+role: String\" vertex=\"1\">\n          <mxGeometry height=\"70\" width=\"180\" x=\"470\" y=\"50\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"u_m\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+login()&#xa;+viewDashboard()\" vertex=\"1\">\n          <mxGeometry height=\"45\" width=\"180\" x=\"470\" y=\"120\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"b_h\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;fontStyle=1;align=center;verticalAlign=middle;fillColor=#ffffff;strokeColor=#000000;\" value=\"BusinessUser\" vertex=\"1\">\n          <mxGeometry height=\"30\" width=\"180\" x=\"120\" y=\"220\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"b_a\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+id: long&#xa;+username: String&#xa;+password: String&#xa;+addtime: timestamp\" vertex=\"1\">\n          <mxGeometry height=\"90\" width=\"180\" x=\"120\" y=\"250\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"b_m\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+viewKeywordHeat()&#xa;+analyzeSentiment()&#xa;+viewRecords()\" vertex=\"1\">\n          <mxGeometry height=\"60\" width=\"180\" x=\"120\" y=\"340\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"a_h\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;fontStyle=1;align=center;verticalAlign=middle;fillColor=#ffffff;strokeColor=#000000;\" value=\"Administrator\" vertex=\"1\">\n          <mxGeometry height=\"30\" width=\"180\" x=\"380\" y=\"220\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"a_a\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+id: long&#xa;+username: String&#xa;+password: String&#xa;+addtime: timestamp\" vertex=\"1\">\n          <mxGeometry height=\"90\" width=\"180\" x=\"380\" y=\"250\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"a_m\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+manageUsers()&#xa;+manageTasks()&#xa;+manageSystem()\" vertex=\"1\">\n          <mxGeometry height=\"60\" width=\"180\" x=\"380\" y=\"340\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"c_h\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;fontStyle=1;align=center;verticalAlign=middle;fillColor=#ffffff;strokeColor=#000000;\" value=\"Customer\" vertex=\"1\">\n          <mxGeometry height=\"30\" width=\"180\" x=\"640\" y=\"220\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"c_a\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+id: long&#xa;+username: String&#xa;+password: String&#xa;+addtime: timestamp\" vertex=\"1\">\n          <mxGeometry height=\"90\" width=\"180\" x=\"640\" y=\"250\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"c_m\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+viewRawData()&#xa;+viewCleanData()&#xa;+viewTrend()\" vertex=\"1\">\n          <mxGeometry height=\"60\" width=\"180\" x=\"640\" y=\"340\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"p_h\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;fontStyle=1;align=center;verticalAlign=middle;fillColor=#ffffff;strokeColor=#000000;\" value=\"PlatformConfig\" vertex=\"1\">\n          <mxGeometry height=\"30\" width=\"210\" x=\"40\" y=\"500\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"p_a\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+id: int&#xa;+platformName: String&#xa;+platformCode: String&#xa;+baseUrl: String&#xa;+status: String&#xa;+createTime: DateTime\" vertex=\"1\">\n          <mxGeometry height=\"115\" width=\"210\" x=\"40\" y=\"530\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"p_m\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+add()&#xa;+update()&#xa;+delete()\" vertex=\"1\">\n          <mxGeometry height=\"55\" width=\"210\" x=\"40\" y=\"645\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"t_h\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;fontStyle=1;align=center;verticalAlign=middle;fillColor=#ffffff;strokeColor=#000000;\" value=\"TaskInfo\" vertex=\"1\">\n          <mxGeometry height=\"30\" width=\"200\" x=\"300\" y=\"500\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"t_a\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+id: int&#xa;+taskName: String&#xa;+platformCode: String&#xa;+cronExpr: String&#xa;+status: String&#xa;+createTime: DateTime\" vertex=\"1\">\n          <mxGeometry height=\"115\" width=\"200\" x=\"300\" y=\"530\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"t_m\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+add()&#xa;+update()&#xa;+delete()\" vertex=\"1\">\n          <mxGeometry height=\"55\" width=\"200\" x=\"300\" y=\"645\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"r_h\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;fontStyle=1;align=center;verticalAlign=middle;fillColor=#ffffff;strokeColor=#000000;\" value=\"RawData\" vertex=\"1\">\n          <mxGeometry height=\"30\" width=\"220\" x=\"850\" y=\"220\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"r_a\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+id: int&#xa;+platformCode: String&#xa;+keyword: String&#xa;+content: longtext&#xa;+publishTime: DateTime&#xa;+createTime: DateTime\" vertex=\"1\">\n          <mxGeometry height=\"115\" width=\"220\" x=\"850\" y=\"250\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"r_m\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+add()&#xa;+update()&#xa;+delete()\" vertex=\"1\">\n          <mxGeometry height=\"55\" width=\"220\" x=\"850\" y=\"365\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"ar_h\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;fontStyle=1;align=center;verticalAlign=middle;fillColor=#ffffff;strokeColor=#000000;\" value=\"AnalysisResult\" vertex=\"1\">\n          <mxGeometry height=\"30\" width=\"220\" x=\"560\" y=\"500\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"ar_a\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+id: int&#xa;+dataId: int&#xa;+sentimentLabel: String&#xa;+sentimentScore: double&#xa;+reason: String&#xa;+createTime: DateTime\" vertex=\"1\">\n          <mxGeometry height=\"115\" width=\"220\" x=\"560\" y=\"530\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"ar_m\" parent=\"1\" style=\"rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=4;fillColor=#ffffff;strokeColor=#000000;\" value=\"+add()&#xa;+update()&#xa;+delete()\" vertex=\"1\">\n          <mxGeometry height=\"55\" width=\"220\" x=\"560\" y=\"645\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"g1\" edge=\"1\" parent=\"1\" source=\"b_h\" style=\"endArrow=block;endFill=0;html=1;entryX=0.056;entryY=1.111;entryDx=0;entryDy=0;entryPerimeter=0;\" target=\"u_m\">\n          <mxGeometry relative=\"1\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"g2\" edge=\"1\" parent=\"1\" source=\"a_h\" style=\"endArrow=block;endFill=0;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;\" target=\"u_m\">\n          <mxGeometry relative=\"1\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"g3\" edge=\"1\" parent=\"1\" source=\"c_h\" style=\"endArrow=block;endFill=0;html=1;entryX=0.658;entryY=1.067;entryDx=0;entryDy=0;entryPerimeter=0;\" target=\"u_m\">\n          <mxGeometry relative=\"1\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"g4\" edge=\"1\" parent=\"1\" source=\"a_m\" style=\"endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\" target=\"p_h\">\n          <mxGeometry relative=\"1\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"g5\" edge=\"1\" parent=\"1\" source=\"a_m\" style=\"endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\" target=\"t_h\">\n          <mxGeometry relative=\"1\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"g6\" edge=\"1\" parent=\"1\" source=\"b_m\" style=\"endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\" target=\"ar_h\">\n          <mxGeometry relative=\"1\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"g7\" edge=\"1\" parent=\"1\" source=\"c_h\" style=\"endArrow=classic;html=1;\" target=\"r_h\">\n          <mxGeometry relative=\"1\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"g8\" edge=\"1\" parent=\"1\" source=\"t_h\" style=\"endArrow=classic;html=1;\" target=\"ar_h\">\n          <mxGeometry relative=\"1\" as=\"geometry\" />\n        </mxCell>\n        <mxCell id=\"g9\" edge=\"1\" parent=\"1\" source=\"r_m\" style=\"endArrow=classic;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;\" target=\"ar_h\">\n          <mxGeometry relative=\"1\" as=\"geometry\" />\n        </mxCell>\n      </root>\n    </mxGraphModel>\n  </diagram>\n</mxfile>\n\n",
+      "category": "毕设-古克文",
+      "createdAt": "2026-05-03T03:30:50.919Z",
+      "updatedAt": "2026-05-04T08:39:57.773Z"
+    },
+    {
+      "id": "1777776571364",
+      "title": "角色-提示词",
+      "content": " private static final String SYSTEM_PROMPT = \"你是 DataPlatform 智能数据助手，帮助用户查询和管理数据采集平台。\\n\\n\"\n            + \"## 你的能力\\n\"\n            + \"1. 查询系统概况（用户数、平台数、任务数、异常任务、各服务运行状态）\\n\"\n            + \"2. 查询数据采集量和趋势（总吞吐量、按时间范围查询）\\n\"\n            + \"3. 查询各平台数据量对比（Reddit、淘宝等平台的采集量排名）\\n\"\n            + \"4. 查询关键词热度排名（热门关键词及热度值）\\n\"\n            + \"5. 查询情感分析结果（正面/中性/负面占比分布）\\n\"\n            + \"6. 查看具体情感分析记录（评论内容、情感标签、分析原因）\\n\"\n            + \"7. 查看采集任务列表和详情（任务名、平台、定时规则、状态）\\n\"\n            + \"8. 手动触发采集任务执行\\n\"\n            + \"9. 查看任务执行日志（最近执行记录、成功/失败状态）\\n\\n\"\n            + \"## 回答规则\\n\"\n            + \"- 用中文回答\\n\"\n            + \"- 数据要具体，带数字，带单位\\n\"\n            + \"- 适当用 emoji 让回答更易读\\n\"\n            + \"- 长列表只展示前 10 条，提示用户可以翻页\\n\"\n            + \"- 如果数据有明显异常（如失败率高、异常任务多），主动提醒用户\\n\"\n            + \"- 不确定的事情不要编造，说\\\"我帮你查一下\\\"\\n\"\n            + \"- 触发任务前要确认用户意图，不要直接触发\\n\"\n            + \"- 如果用户问的是闲聊问题（如\\\"你是谁\\\"），直接友好回答，不需要调用工具\\n\\n\"\n            + \"## 不能做的事（遇到时礼貌拒绝并说明替代方案）\\n\"\n            + \"- 不要创建、修改、删除采集任务（引导去管理后台操作）\\n\"\n            + \"- 不要管理用户（引导去管理后台操作）\\n\"\n            + \"- 不要修改系统配置（引导去 Nacos 控制台）\\n\"\n            + \"- 不要编造数据\\n\"\n            + \"- 不要预测未来趋势（只能查历史数据）\";",
+      "category": "毕设-古克文",
+      "createdAt": "2026-05-03T02:49:31.364Z",
+      "updatedAt": "2026-05-03T02:49:51.647Z"
+    },
+    {
+      "id": "1777775548387",
+      "title": "十二个能力",
+      "content": "📊 查询类（只读，安全）\n查系统概况 — 用户数、平台数、任务数、异常任务、各服务运行状态\n查数据采集量和趋势 — 总吞吐量、按时间范围查询采集量变化\n查各平台数据量对比 — Reddit、淘宝等平台的采集量排名\n查关键词热度排名 — 热门关键词及热度值\n查情感分析分布 — 正面/中性/负面占比\n查具体情感分析记录 — 评论内容、情感标签、分析原因\n查采集任务列表和详情 — 任务名、平台、定时规则、状态\n查任务执行日志 — 最近执行记录、成功/失败状态\n⚡ 操作类（需确认）\n手动触发采集任务 — 用户确认后执行\n手动触发情感分析 — 对指定平台数据重新分析\n💬 交互类\n闲聊问答 — \"你是谁\"之类的日常对话，直接友好回答\n异常主动提醒 — 发现失败率高、异常任务多时主动告知用户\n每个能力都对应你现有的 API（`/api/dashboard/*`、`/internal/sentiment/*`、`/api/tasks/*` 等），代码已经写好在 `AgentService.java` 里了 🏀\n\n",
+      "category": "毕设-古克文",
+      "createdAt": "2026-05-03T02:32:28.387Z",
+      "updatedAt": "2026-05-03T02:49:27.962Z"
+    },
+    {
+      "id": "1777734011954",
+      "title": "Agent 提示词",
+      "content": "1.公共图库我可以 AI 打标签的图片有哪些\n2.公共图库有哪些图片呢\n",
+      "category": "毕设-王春迎",
+      "createdAt": "2026-05-02T15:00:11.954Z",
+      "updatedAt": "2026-05-03T09:17:10.879Z"
+    },
+    {
+      "id": "1777716858986",
+      "title": "待办",
+      "content": "1. 管理员的kafka消息挤压应该加上情感分析部分的\n2. 在采集趋势图下面新增原始数据透视和清洗数据透视，这两个是拿来给用户展示它提交任务爬取的所有原始数据和清洗之后的数据的，支持导出ecxel和json",
+      "category": "毕设-古克文",
+      "createdAt": "2026-05-02T10:14:18.986Z",
+      "updatedAt": "2026-05-02T16:01:49.927Z"
+    },
+    {
+      "id": "1777714205052",
+      "title": "情感分析流程",
+      "content": "dp-sink 入库成功\n    ↓\n发送 Kafka 消息到 dp-sentiment-trigger-topic\n    ↓\ndp-sentiment 消费消息\n    ↓\n根据评论ID查询并分析\n    ↓\n结果写入 analysis 数据库",
+      "category": "毕设-古克文",
+      "createdAt": "2026-05-02T09:30:05.052Z",
+      "updatedAt": "2026-05-02T15:00:37.969Z"
+    },
+    {
+      "id": "1777708182561",
+      "title": "接入大模型分析数据",
+      "content": "1. 清洗数据正常入库\n2. 再启动一个“情感分析任务/消费者”（把dp-gateway这个微服务改为dp-sentiment，在这里进行情感分析任务）\n3. 从清洗后的评论集合里取待分析数据（只分析评论即可）\n4. 调大模型做情感分类(大模型配置做成管理员可在页面动态配置的)\n5. 把结果写入新的分析集合（放进一个新的数据库里面叫analysis，然后每个平台一个集合，例如reddit_analysis）\n\n现在的流程：\n1. 定时任务触发\n2. 读取 sentiment.platforms 配置列表\n3. 遍历所有 enabled: true 的平台\n4. 对每个平台：\n   - 从对应评论集合扫描待分析评论\n   - 调大模型做情感分类\n   - 把结果写到该平台对应的分析集合",
+      "category": "毕设-古克文",
+      "createdAt": "2026-05-02T07:49:42.561Z",
+      "updatedAt": "2026-05-02T07:57:52.476Z"
+    }
+  ],
+  "categories": [
+    "未分类",
+    "生活",
+    "工作",
+    "技术",
+    "学习",
+    "毕设-古克文",
+    "毕设-王春迎",
+    "gpt"
+  ],
+  "updatedAt": "2026-05-22T05:18:26.734Z"
+}
