@@ -3,12 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>记事本</title>
+    <title>小古随笔</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201024%201024%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M848.02%200H284.81C207.98%200%20150.42%2057.61%20150.42%20134.39v19.22C86.4%20166.38%2041.6%20223.99%2041.6%20294.42a136.67%20136.67%200%200%200%2051.21%20108.76%20141.21%20141.21%200%200%200%200%20217.64A136.67%20136.67%200%200%200%2041.6%20729.58c0%2070.43%2044.8%20121.64%20108.82%20140.8v19.22a135.15%20135.15%200%200%200%20134.39%20134.4h563.21a135.21%20135.21%200%200%200%20134.39-134.4V134.39C976.01%2057.61%20918.39%200%20848.02%200zM150.42%20582.55a77.71%2077.71%200%200%201%200-140.8z%20m0-358.44v140.68c-25.63-12.82-44.74-44.8-44.74-70.37s19.11-57.61%2044.74-70.43zM105.68%20729.58a78.64%2078.64%200%200%201%2044.8-70.37v140.8a78.64%2078.64%200%200%201-44.8-70.43z%20m806.36%20160.02a64.08%2064.08%200%200%201-64.08%2064.08H284.81a64.08%2064.08%200%200%201-64.08-64.08V134.39a64.08%2064.08%200%200%201%2064.08-64.08h563.21a64.08%2064.08%200%200%201%2064.08%2064.08z%22%2F%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M335.15%20491.55h491.55v68.22H335.15z%20m0%20252.54h491.55v68.27H335.15z%22%2F%3E%3Cpath%20fill%3D%22%2300B65F%22%20d%3D%22M335.15%20211.64h491.55v68.27H335.15z%22%2F%3E%3C%2Fsvg%3E">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            scrollbar-width: none;        /* Firefox */
+            -ms-overflow-style: none;     /* IE / 旧 Edge */
+        }
+
+        *::-webkit-scrollbar {
+            display: none;                /* Chrome / Safari / 新 Edge */
         }
 
         body {
@@ -27,6 +36,28 @@
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 8px;
+            user-select: none;
+        }
+
+        .brand-icon {
+            width: 26px;
+            height: 26px;
+            flex-shrink: 0;
+        }
+
+        .brand-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #211D1C;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
         .toolbar button {
@@ -262,9 +293,120 @@
             border-color: #999;
         }
 
+        /* 编辑区主体：内容 + 右侧目录 */
+        .editor-body {
+            flex: 1;
+            display: flex;
+            min-height: 0;
+        }
+
         .editor-content {
             flex: 1;
+            min-width: 0;
             padding: 8px 20px 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        /* 笔记目录面板 */
+        .note-toc {
+            width: 220px;
+            border-left: 1px solid #f0f0f0;
+            background: #fafafa;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .note-toc.collapsed {
+            width: 32px;
+        }
+
+        .note-toc-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 12px;
+            color: #666;
+            user-select: none;
+        }
+
+        .note-toc.collapsed .note-toc-header {
+            padding: 10px 0;
+            justify-content: center;
+            border-bottom-color: transparent;
+        }
+
+        .note-toc.collapsed .note-toc-header > .note-toc-title {
+            display: none;
+        }
+
+        .note-toc-toggle {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            color: #999;
+            padding: 2px 4px;
+            line-height: 1;
+        }
+
+        .note-toc-toggle:hover {
+            color: #333;
+        }
+
+        .note-toc-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 6px 0;
+        }
+
+        .note-toc.collapsed .note-toc-list {
+            display: none;
+        }
+
+        .toc-item {
+            padding: 4px 12px;
+            font-size: 13px;
+            color: #555;
+            cursor: pointer;
+            line-height: 1.5;
+            border-left: 2px solid transparent;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .toc-item:hover {
+            background: #f0f0f0;
+            color: #000;
+            border-left-color: #888;
+        }
+
+        .toc-level-1 {
+            padding-left: 12px;
+            font-weight: 500;
+        }
+
+        .toc-level-2 {
+            padding-left: 24px;
+        }
+
+        .toc-level-3 {
+            padding-left: 36px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        .toc-empty {
+            padding: 12px;
+            color: #bbb;
+            font-size: 12px;
+            text-align: center;
         }
 
         .editor-content textarea {
@@ -281,6 +423,215 @@
 
         .editor-content textarea::placeholder {
             color: #ccc;
+        }
+
+        /* 格式化工具栏 */
+        .format-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            padding: 4px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            background: #fafafa;
+        }
+
+        .format-toolbar button {
+            min-width: 28px;
+            height: 28px;
+            padding: 0 6px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #555;
+            font-family: inherit;
+        }
+
+        .format-toolbar button:hover {
+            background: #fff;
+            border-color: #ddd;
+            color: #000;
+        }
+
+        .format-toolbar .sep {
+            width: 1px;
+            background: #e0e0e0;
+            margin: 4px 4px;
+        }
+
+        /* 富文本编辑器 */
+        .editor-content .rich-editor {
+            flex: 1;
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #444;
+            font-family: inherit;
+            overflow-y: auto;
+            word-wrap: break-word;
+        }
+
+        .editor-content .rich-editor:empty::before {
+            content: attr(data-placeholder);
+            color: #ccc;
+        }
+
+        .editor-content .rich-editor h1 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 12px 0 8px;
+            color: #222;
+        }
+
+        .editor-content .rich-editor h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 10px 0 6px;
+            color: #222;
+        }
+
+        .editor-content .rich-editor h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 8px 0 4px;
+            color: #222;
+        }
+
+        .editor-content .rich-editor ul,
+        .editor-content .rich-editor ol {
+            padding-left: 24px;
+            margin: 4px 0;
+        }
+
+        .editor-content .rich-editor blockquote {
+            border-left: 3px solid #ccc;
+            padding: 4px 12px;
+            margin: 8px 0;
+            color: #777;
+            background: #fafafa;
+        }
+
+        .editor-content .rich-editor code {
+            background: #f4f4f4;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-family: Consolas, Monaco, monospace;
+            font-size: 13px;
+            color: #c7254e;
+        }
+
+        /* 代码块（飞书风格） */
+        .editor-content .rich-editor .code-block {
+            margin: 12px 0;
+            border: 1px solid #e5e6eb;
+            border-radius: 6px;
+            background: #f7f8fa;
+            overflow: hidden;
+            width: -moz-fit-content;
+            width: fit-content;
+            max-width: 100%;
+            min-width: 260px;
+        }
+
+        .editor-content .rich-editor .code-block-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 12px;
+            background: #f2f3f5;
+            border-bottom: 1px solid #e5e6eb;
+            font-size: 12px;
+            color: #86909c;
+            user-select: none;
+        }
+
+        .editor-content .rich-editor .code-block-lang {
+            appearance: none;
+            -webkit-appearance: none;
+            padding: 2px 22px 2px 8px;
+            background-color: transparent;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%2386909c' d='M2.5 4.5L6 8l3.5-3.5z'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 6px center;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+            color: #4e5969;
+            font-family: inherit;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .editor-content .rich-editor .code-block-lang:hover {
+            background-color: #fff;
+            border-color: #e5e6eb;
+        }
+
+        .editor-content .rich-editor .code-block-lang:focus {
+            border-color: #c9cdd4;
+            background-color: #fff;
+        }
+
+        .editor-content .rich-editor .code-block-copy {
+            padding: 2px 10px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            color: #4e5969;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+
+        .editor-content .rich-editor .code-block-copy:hover {
+            background: #fff;
+            border-color: #e5e6eb;
+            color: #1d2129;
+        }
+
+        .editor-content .rich-editor .code-block-copy.copied {
+            color: #00b42a;
+        }
+
+        .editor-content .rich-editor .code-block pre {
+            margin: 0;
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            overflow-x: auto;
+        }
+
+        .editor-content .rich-editor .code-block pre code {
+            background: transparent !important;
+            padding: 0 !important;
+            color: #1d2129;
+            font-size: 13px;
+            line-height: 1.7;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, 'Courier New', monospace;
+            white-space: pre;
+        }
+
+        /* 让 highlight.js 主题不要遮挡我们的代码块背景 */
+        .editor-content .rich-editor .code-block pre code.hljs {
+            background: transparent !important;
+            padding: 0 !important;
+        }
+
+        /* 兼容尚未被 .code-block 包裹的旧 pre（JS 升级前的瞬态样式） */
+        .editor-content .rich-editor > pre {
+            background: #f7f8fa;
+            border: 1px solid #e5e6eb;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin: 12px 0;
+            overflow-x: auto;
         }
 
         /* 底部状态栏 */
@@ -453,6 +804,14 @@
                 flex-wrap: nowrap;
             }
 
+            .brand-name {
+                display: none;
+            }
+
+            .brand {
+                margin-right: 4px;
+            }
+
             .toolbar button {
                 padding: 8px 10px;
                 font-size: 12px;
@@ -573,9 +932,36 @@
                 padding: 8px 16px 20px;
             }
 
-            .editor-content textarea {
+            .editor-content textarea,
+            .editor-content .rich-editor {
                 font-size: 16px;
                 line-height: 1.7;
+            }
+
+            .format-toolbar {
+                padding: 4px 12px;
+            }
+
+            .format-toolbar button {
+                font-size: 14px;
+            }
+
+            /* 移动端：目录展开时浮在右侧覆盖编辑区 */
+            .note-toc {
+                position: absolute;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                z-index: 30;
+                box-shadow: -4px 0 12px rgba(0,0,0,0.06);
+            }
+
+            .note-toc.collapsed {
+                box-shadow: none;
+            }
+
+            .editor {
+                position: relative;
             }
 
             .sync-status {
@@ -619,6 +1005,14 @@
     <!-- 工具栏 -->
     <div class="toolbar">
         <button class="btn-menu" onclick="toggleSidebar()">☰</button>
+        <div class="brand">
+            <svg class="brand-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+                <path fill="#333333" d="M848.020811 0H284.814986C207.97712 0 150.42154 57.613835 150.42154 134.393446v19.22403C86.399694 166.375242 41.601879 223.989077 41.601879 294.418933a136.665377 136.665377 0 0 0 51.205825 108.761406 141.209239 141.209239 0 0 0 0 217.639322A136.665377 136.665377 0 0 0 41.601879 729.581067c0 70.429856 44.797815 121.635681 108.819661 140.801457v19.22403a135.150757 135.150757 0 0 0 134.393446 134.393446h563.205825a135.209011 135.209011 0 0 0 134.393447-134.393446V134.393446C976.006248 57.613835 918.392412 0 848.020811 0zM150.42154 582.546365a77.711685 77.711685 0 0 1 0-140.801457z m0-358.440778v140.684947c-25.63204-12.81602-44.739561-44.797815-44.739561-70.371601s19.107521-57.613835 44.739561-70.429856zM105.681979 729.581067a78.643759 78.643759 0 0 1 44.797815-70.371601v140.801457A78.643759 78.643759 0 0 1 105.681979 729.581067z m806.360678 160.025487a64.0801 64.0801 0 0 1-64.0801 64.0801H284.814986a64.0801 64.0801 0 0 1-64.0801-64.0801V134.393446a64.0801 64.0801 0 0 1 64.0801-64.0801h563.205825a64.0801 64.0801 0 0 1 64.080101 64.0801z"/>
+                <path fill="#333333" d="M335.146992 491.552623h491.552623v68.216179H335.146992z m0 252.533849h491.552623v68.274434H335.146992z"/>
+                <path fill="#00B65F" d="M335.146992 211.639094h491.552623v68.274434H335.146992z"/>
+            </svg>
+            <span class="brand-name">小古随笔</span>
+        </div>
         <button onclick="newNote()">＋ 新建</button>
         <button onclick="deleteNote()">🗑 删除</button>
         <button class="btn-hide-mobile" onclick="showCategoryModal()">分类管理</button>
@@ -775,16 +1169,25 @@
             notes.forEach(n => {
                 if (!n.category) n.category = '未分类';
             });
-            
+
             renderCategoryTabs();
             renderList();
             updateCount();
             updateSyncStatus();
-            
+
             // 如果配置了 GitHub，尝试从远程加载
             if (githubConfig.token && githubConfig.repo) {
                 await loadFromGitHub();
-            } else if (notes.length > 0) {
+            }
+
+            // 远程数据加载后再插入"快捷键说明"笔记，避免被远程覆盖
+            const helpInserted = insertShortcutsHelpIfNeeded();
+            if (helpInserted) {
+                renderCategoryTabs();
+                renderList();
+                updateCount();
+                selectNote('help-shortcuts');
+            } else if (!currentId && notes.length > 0) {
                 selectNote(notes[0].id);
             }
         }
@@ -830,11 +1233,11 @@
 
             list.innerHTML = items.map(n => `
                 <div class="note-item ${n.id === currentId ? 'active' : ''}" onclick="selectNote('${n.id}')">
-                    <div class="title">${n.title || '无标题'}</div>
-                    <div class="preview">${(n.content || '').substring(0, 50)}</div>
+                    <div class="title">${escapeHtml(n.title) || '无标题'}</div>
+                    <div class="preview">${escapeHtml(htmlToPreview(n.content))}</div>
                     <div class="meta">
                         <span class="date">${formatDate(n.updatedAt)}</span>
-                        <span class="category-badge">${n.category}</span>
+                        <span class="category-badge">${escapeHtml(n.category)}</span>
                     </div>
                 </div>
             `).join('');
@@ -880,17 +1283,108 @@
             const editor = document.getElementById('editor');
             editor.innerHTML = `
                 <div class="editor-header">
-                    <input type="text" id="noteTitle" value="${escapeHtml(note.title)}" placeholder="标题" oninput="onEdit()">
+                    <input type="text" id="noteTitle" value="${escapeHtml(note.title)}" placeholder="标题" oninput="onEdit()" spellcheck="false">
                     <div class="category-select">
                         <select id="noteCategory" onchange="onCategoryChange()">
                             ${categoryOptions}
                         </select>
                     </div>
                 </div>
-                <div class="editor-content">
-                    <textarea id="noteContent" placeholder="开始写..." oninput="onEdit()">${escapeHtml(note.content)}</textarea>
+                <div class="format-toolbar" onmousedown="event.preventDefault()">
+                    <button type="button" title="加粗 (Ctrl+B)" onclick="execFormat('bold')"><b>B</b></button>
+                    <button type="button" title="斜体 (Ctrl+I)" onclick="execFormat('italic')"><i>I</i></button>
+                    <button type="button" title="下划线 (Ctrl+U)" onclick="execFormat('underline')"><u>U</u></button>
+                    <button type="button" title="删除线 (Ctrl+Shift+S)" onclick="execFormat('strikeThrough')"><s>S</s></button>
+                    <span class="sep"></span>
+                    <button type="button" title="标题 1 (Ctrl+1)" onclick="execFormat('formatBlock','h1')">H1</button>
+                    <button type="button" title="标题 2 (Ctrl+2)" onclick="execFormat('formatBlock','h2')">H2</button>
+                    <button type="button" title="标题 3 (Ctrl+3)" onclick="execFormat('formatBlock','h3')">H3</button>
+                    <button type="button" title="正文 (Ctrl+0)" onclick="execFormat('formatBlock','p')">¶</button>
+                    <span class="sep"></span>
+                    <button type="button" title="无序列表 (Ctrl+Shift+8)" onclick="execFormat('insertUnorderedList')">• 列表</button>
+                    <button type="button" title="有序列表 (Ctrl+Shift+7)" onclick="execFormat('insertOrderedList')">1. 列表</button>
+                    <span class="sep"></span>
+                    <button type="button" title="行内代码 (Ctrl+E)" onclick="insertInlineCode()">&lt;/&gt;</button>
+                    <button type="button" title="代码块 (Ctrl+Shift+C)" onclick="insertCodeBlock()">{ }</button>
+                    <button type="button" title="引用 (Ctrl+Shift+.)" onclick="execFormat('formatBlock','blockquote')">❝</button>
+                    <span class="sep"></span>
+                    <button type="button" title="清除格式 (Ctrl+\\)" onclick="execFormat('removeFormat')">⌫</button>
+                </div>
+                <div class="editor-body">
+                    <div class="editor-content">
+                        <div id="noteContent" class="rich-editor" contenteditable="true" data-placeholder="开始写..."
+                             spellcheck="false" oninput="onEdit()" onkeydown="onEditorKeyDown(event)"></div>
+                    </div>
+                    <div class="note-toc" id="noteToc">
+                        <div class="note-toc-header">
+                            <span class="note-toc-title">目录</span>
+                            <button type="button" class="note-toc-toggle" id="tocToggle" title="收起/展开" onclick="toggleToc()">◀</button>
+                        </div>
+                        <div class="note-toc-list" id="tocList"></div>
+                    </div>
                 </div>
             `;
+            const contentEl = document.getElementById('noteContent');
+            contentEl.innerHTML = contentToHtml(note.content || '');
+            upgradeLegacyCodeBlocks(contentEl);
+            applyHighlight(contentEl);
+
+            // 编辑代码块时，先把 span 摊平成纯文本，便于光标定位
+            contentEl.addEventListener('focusin', e => {
+                const code = e.target && e.target.closest && e.target.closest('.code-block pre code');
+                if (!code) return;
+                if (code.firstElementChild) {
+                    code.textContent = code.textContent;
+                }
+            });
+            // 离开代码块时，重新高亮
+            contentEl.addEventListener('focusout', e => {
+                const code = e.target && e.target.closest && e.target.closest('.code-block pre code');
+                if (!code) return;
+                const block = code.closest('.code-block');
+                applyHighlightTo(block);
+            });
+
+            // 渲染右侧目录并恢复折叠状态
+            applyTocState();
+            buildToc();
+        }
+
+        // 把裸的 <pre> 包装成飞书风格代码块（兼容旧笔记数据）
+        function upgradeLegacyCodeBlocks(root) {
+            if (!root) return;
+            // 始终用完整语言列表重建已有 .code-block 的 header，保证一致性
+            root.querySelectorAll('.code-block').forEach(block => {
+                const header = block.querySelector('.code-block-header');
+                if (!header) return;
+                const select = header.querySelector('select.code-block-lang');
+                const lang = (select && select.value) || block.getAttribute('data-lang') || 'plaintext';
+                block.setAttribute('data-lang', lang);
+                header.setAttribute('contenteditable', 'false');
+                header.innerHTML = buildCodeBlockHeaderHtml(lang);
+            });
+            // 包装尚未被 .code-block 包裹的裸 pre
+            root.querySelectorAll('pre').forEach(pre => {
+                if (pre.closest('.code-block')) return;
+                let inner = pre.querySelector('code');
+                if (!inner) {
+                    inner = document.createElement('code');
+                    inner.textContent = pre.textContent;
+                    pre.textContent = '';
+                    pre.appendChild(inner);
+                }
+                const lang = 'plaintext';
+                const wrap = document.createElement('div');
+                wrap.className = 'code-block';
+                wrap.setAttribute('data-lang', lang);
+                const header = document.createElement('div');
+                header.className = 'code-block-header';
+                header.setAttribute('contenteditable', 'false');
+                header.innerHTML = buildCodeBlockHeaderHtml(lang);
+                pre.parentNode.insertBefore(wrap, pre);
+                wrap.appendChild(header);
+                wrap.appendChild(pre);
+            });
         }
 
         // 分类变更
@@ -913,10 +1407,11 @@
             if (!note) return;
 
             note.title = document.getElementById('noteTitle').value;
-            note.content = document.getElementById('noteContent').value;
+            note.content = document.getElementById('noteContent').innerHTML;
             note.updatedAt = new Date().toISOString();
 
             renderList();
+            buildToc();
             
             clearTimeout(saveTimer);
             saveTimer = setTimeout(() => {
@@ -1135,10 +1630,371 @@
             }
         }
 
+        // 首次启动插入"快捷键说明"笔记（仅一次，用户删除后不再恢复）
+        function insertShortcutsHelpIfNeeded() {
+            if (localStorage.getItem('shortcutsHelpCreated') === '1') return false;
+            const helpId = 'help-shortcuts';
+            if (notes.some(n => n.id === helpId)) {
+                localStorage.setItem('shortcutsHelpCreated', '1');
+                return false;
+            }
+            const now = new Date().toISOString();
+            const helpNote = {
+                id: helpId,
+                title: '📝 格式化快捷键说明',
+                category: '未分类',
+                createdAt: now,
+                updatedAt: now,
+                content: `
+<h1>快捷键速查</h1>
+<p>在编辑笔记时，可使用工具栏按钮或下面的快捷键来快速格式化文字。</p>
+
+<h2>文字样式</h2>
+<ul>
+  <li><b>加粗</b>：<code>Ctrl + B</code></li>
+  <li><i>斜体</i>：<code>Ctrl + I</code></li>
+  <li><u>下划线</u>：<code>Ctrl + U</code></li>
+  <li><s>删除线</s>：<code>Ctrl + Shift + S</code></li>
+</ul>
+
+<h2>标题</h2>
+<ul>
+  <li>H1：<code>Ctrl + 1</code></li>
+  <li>H2：<code>Ctrl + 2</code></li>
+  <li>H3：<code>Ctrl + 3</code></li>
+  <li>恢复正文：<code>Ctrl + 0</code></li>
+</ul>
+
+<h2>列表</h2>
+<ul>
+  <li>无序列表：<code>Ctrl + Shift + 8</code></li>
+  <li>有序列表：<code>Ctrl + Shift + 7</code></li>
+</ul>
+
+<h2>代码与引用</h2>
+<ul>
+  <li>行内代码：<code>Ctrl + E</code>，效果：<code>console.log('hi')</code></li>
+  <li>代码块：<code>Ctrl + Shift + C</code>，效果：</li>
+</ul>
+<div class="code-block" data-lang="javascript"><div class="code-block-header" contenteditable="false"><select class="code-block-lang" onchange="onCodeLangChange(this)"><option value="plaintext">纯文本</option><option value="javascript" selected>JavaScript</option><option value="python">Python</option><option value="java">Java</option></select><button type="button" class="code-block-copy" onclick="copyCodeBlock(this)">复制</button></div><pre><code>function hello() {
+  const name = 'world';
+  return name + '!';
+}</code></pre></div>
+<ul>
+  <li>引用：<code>Ctrl + Shift + .</code>，效果：</li>
+</ul>
+<blockquote>这是一段引用文字。</blockquote>
+
+<h2>其它</h2>
+<ul>
+  <li>清除格式：<code>Ctrl + \\</code></li>
+</ul>
+
+<p>提示：Mac 系统下 <code>Ctrl</code> 也可使用 <code>⌘</code>。</p>
+`.trim()
+            };
+            notes.unshift(helpNote);
+            localStorage.setItem('shortcutsHelpCreated', '1');
+            saveLocal();
+            syncToGitHub();
+            return true;
+        }
+
         // HTML 转义
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // 判断字符串是否已经是 HTML
+        function looksLikeHtml(str) {
+            return /<[a-zA-Z][^>]*>/.test(str || '');
+        }
+
+        // 把存储的内容转为编辑器可用的 HTML（旧的纯文本会被迁移）
+        function contentToHtml(content) {
+            if (!content) return '';
+            if (looksLikeHtml(content)) return content;
+            return escapeHtml(content).replace(/\n/g, '<br>');
+        }
+
+        // 把 HTML 内容转为列表预览用的纯文本
+        function htmlToPreview(content) {
+            if (!content) return '';
+            const tmp = document.createElement('div');
+            tmp.innerHTML = content;
+            return (tmp.textContent || '').replace(/\s+/g, ' ').trim().substring(0, 50);
+        }
+
+        // 执行格式化命令
+        function execFormat(cmd, arg) {
+            document.getElementById('noteContent')?.focus();
+            if (cmd === 'formatBlock') {
+                document.execCommand('formatBlock', false, arg);
+            } else {
+                document.execCommand(cmd, false, arg || null);
+            }
+            onEdit();
+        }
+
+        // 插入行内代码：把选中文字包进 <code>
+        function insertInlineCode() {
+            const editor = document.getElementById('noteContent');
+            editor?.focus();
+            const sel = window.getSelection();
+            if (!sel || sel.rangeCount === 0) return;
+            const range = sel.getRangeAt(0);
+            if (range.collapsed) {
+                const code = document.createElement('code');
+                code.appendChild(document.createTextNode('​'));
+                range.insertNode(code);
+                const r = document.createRange();
+                r.setStart(code.firstChild, 1);
+                r.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(r);
+            } else {
+                const text = range.toString();
+                const code = document.createElement('code');
+                code.textContent = text;
+                range.deleteContents();
+                range.insertNode(code);
+                sel.removeAllRanges();
+            }
+            onEdit();
+        }
+
+        // 支持的代码块语言（与 highlight.js common bundle 对齐）
+        const CODE_LANGS = [
+            { value: 'plaintext', label: '纯文本' },
+            { value: 'javascript', label: 'JavaScript' },
+            { value: 'typescript', label: 'TypeScript' },
+            { value: 'python', label: 'Python' },
+            { value: 'java', label: 'Java' },
+            { value: 'kotlin', label: 'Kotlin' },
+            { value: 'go', label: 'Go' },
+            { value: 'rust', label: 'Rust' },
+            { value: 'c', label: 'C' },
+            { value: 'cpp', label: 'C++' },
+            { value: 'csharp', label: 'C#' },
+            { value: 'swift', label: 'Swift' },
+            { value: 'php', label: 'PHP' },
+            { value: 'ruby', label: 'Ruby' },
+            { value: 'shell', label: 'Shell' },
+            { value: 'bash', label: 'Bash' },
+            { value: 'sql', label: 'SQL' },
+            { value: 'html', label: 'HTML' },
+            { value: 'css', label: 'CSS' },
+            { value: 'scss', label: 'SCSS' },
+            { value: 'xml', label: 'XML' },
+            { value: 'json', label: 'JSON' },
+            { value: 'yaml', label: 'YAML' },
+            { value: 'markdown', label: 'Markdown' },
+            { value: 'dockerfile', label: 'Dockerfile' },
+        ];
+
+        function buildCodeBlockHeaderHtml(currentLang) {
+            const options = CODE_LANGS.map(l =>
+                `<option value="${l.value}"${l.value === currentLang ? ' selected' : ''}>${l.label}</option>`
+            ).join('');
+            return `<select class="code-block-lang" onchange="onCodeLangChange(this)" onmousedown="event.stopPropagation()">${options}</select><button type="button" class="code-block-copy" onclick="copyCodeBlock(this)">复制</button>`;
+        }
+
+        // 构造一个空的飞书风格代码块容器
+        function buildCodeBlock(text, lang = 'plaintext') {
+            const wrap = document.createElement('div');
+            wrap.className = 'code-block';
+            wrap.setAttribute('data-lang', lang);
+            const header = document.createElement('div');
+            header.className = 'code-block-header';
+            header.setAttribute('contenteditable', 'false');
+            header.innerHTML = buildCodeBlockHeaderHtml(lang);
+            const pre = document.createElement('pre');
+            const code = document.createElement('code');
+            code.textContent = text || '​';
+            pre.appendChild(code);
+            wrap.appendChild(header);
+            wrap.appendChild(pre);
+            return { wrap, code };
+        }
+
+        // 插入代码块（飞书风格）
+        function insertCodeBlock() {
+            const editor = document.getElementById('noteContent');
+            editor?.focus();
+            const sel = window.getSelection();
+            if (!sel || sel.rangeCount === 0) return;
+            const range = sel.getRangeAt(0);
+            const text = range.collapsed ? '' : range.toString();
+            const { wrap, code } = buildCodeBlock(text);
+            range.deleteContents();
+            range.insertNode(wrap);
+
+            // 在代码块后插入一个空段落，方便光标继续输入
+            const after = document.createElement('p');
+            after.innerHTML = '<br>';
+            wrap.parentNode.insertBefore(after, wrap.nextSibling);
+
+            const r = document.createRange();
+            r.selectNodeContents(code);
+            r.collapse(false);
+            sel.removeAllRanges();
+            sel.addRange(r);
+            onEdit();
+        }
+
+        // 复制代码块内容到剪贴板
+        function copyCodeBlock(btn) {
+            const block = btn.closest('.code-block');
+            if (!block) return;
+            const codeEl = block.querySelector('pre code') || block.querySelector('pre');
+            const text = codeEl ? codeEl.textContent.replace(/​/g, '') : '';
+
+            const done = (ok) => {
+                btn.classList.toggle('copied', ok);
+                btn.textContent = ok ? '已复制' : '失败';
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.textContent = '复制';
+                }, 1500);
+            };
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => done(true)).catch(() => done(false));
+            } else {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                try {
+                    done(document.execCommand('copy'));
+                } catch (_) {
+                    done(false);
+                }
+                document.body.removeChild(ta);
+            }
+        }
+
+        // ====== 笔记目录 (TOC) ======
+        let tocCollapsed = localStorage.getItem('tocCollapsed') === '1';
+
+        function applyTocState() {
+            const toc = document.getElementById('noteToc');
+            const toggle = document.getElementById('tocToggle');
+            if (!toc) return;
+            toc.classList.toggle('collapsed', tocCollapsed);
+            if (toggle) toggle.textContent = tocCollapsed ? '▶' : '◀';
+        }
+
+        function toggleToc() {
+            tocCollapsed = !tocCollapsed;
+            localStorage.setItem('tocCollapsed', tocCollapsed ? '1' : '0');
+            applyTocState();
+        }
+
+        function buildToc() {
+            const editor = document.getElementById('noteContent');
+            const list = document.getElementById('tocList');
+            if (!editor || !list) return;
+
+            const headings = editor.querySelectorAll('h1, h2, h3');
+            if (headings.length === 0) {
+                list.innerHTML = '<div class="toc-empty">暂无标题</div>';
+                return;
+            }
+
+            let html = '';
+            headings.forEach((h, i) => {
+                const level = parseInt(h.tagName.substring(1), 10);
+                const text = (h.textContent || '').trim() || '(空标题)';
+                html += `<div class="toc-item toc-level-${level}" onclick="scrollToToc(${i})" title="${escapeHtml(text)}">${escapeHtml(text)}</div>`;
+            });
+            list.innerHTML = html;
+        }
+
+        function scrollToToc(index) {
+            const editor = document.getElementById('noteContent');
+            if (!editor) return;
+            const headings = editor.querySelectorAll('h1, h2, h3');
+            const h = headings[index];
+            if (!h) return;
+            h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // 对单个 .code-block 应用 highlight.js 高亮
+        function applyHighlightTo(block) {
+            const code = block && block.querySelector('pre code');
+            if (!code) return;
+            const lang = block.getAttribute('data-lang') || 'plaintext';
+            const text = code.textContent;
+            if (!window.hljs || lang === 'plaintext') {
+                code.textContent = text;
+                code.className = '';
+                return;
+            }
+            try {
+                const lang2 = window.hljs.getLanguage(lang) ? lang : 'plaintext';
+                if (lang2 === 'plaintext') {
+                    code.textContent = text;
+                    code.className = '';
+                    return;
+                }
+                const result = window.hljs.highlight(text, { language: lang2, ignoreIllegals: true });
+                code.innerHTML = result.value;
+                code.className = `hljs language-${lang2}`;
+            } catch (e) {
+                code.textContent = text;
+                code.className = '';
+            }
+        }
+
+        // 对编辑器内所有代码块应用高亮
+        function applyHighlight(root) {
+            if (!root) return;
+            root.querySelectorAll('.code-block').forEach(applyHighlightTo);
+        }
+
+        // 切换代码块语言
+        function onCodeLangChange(select) {
+            const block = select.closest('.code-block');
+            if (!block) return;
+            block.setAttribute('data-lang', select.value);
+            applyHighlightTo(block);
+            onEdit();
+        }
+
+        // 编辑器键盘快捷键
+        function onEditorKeyDown(e) {
+            const ctrl = e.ctrlKey || e.metaKey;
+            if (!ctrl) return;
+            const k = e.key.toLowerCase();
+            const shift = e.shiftKey;
+
+            // 标题 / 正文
+            if (!shift && k === '1') { e.preventDefault(); return execFormat('formatBlock', 'h1'); }
+            if (!shift && k === '2') { e.preventDefault(); return execFormat('formatBlock', 'h2'); }
+            if (!shift && k === '3') { e.preventDefault(); return execFormat('formatBlock', 'h3'); }
+            if (!shift && k === '0') { e.preventDefault(); return execFormat('formatBlock', 'p'); }
+
+            // 行内代码
+            if (!shift && k === 'e') { e.preventDefault(); return insertInlineCode(); }
+
+            // 删除线 / 列表 / 代码块 / 引用 都用 Shift 组合
+            if (shift && k === 's') { e.preventDefault(); return execFormat('strikeThrough'); }
+            if (shift && (k === '8' || e.code === 'Digit8')) { e.preventDefault(); return execFormat('insertUnorderedList'); }
+            if (shift && (k === '7' || e.code === 'Digit7')) { e.preventDefault(); return execFormat('insertOrderedList'); }
+            if (shift && k === 'c') { e.preventDefault(); return insertCodeBlock(); }
+            if (shift && (k === '.' || e.code === 'Period')) { e.preventDefault(); return execFormat('formatBlock', 'blockquote'); }
+
+            // 清除格式
+            if (!shift && k === '\\') { e.preventDefault(); return execFormat('removeFormat'); }
+
+            // 加粗/斜体/下划线浏览器原生处理；触发后我们仍需保存
+            if (!shift && (k === 'b' || k === 'i' || k === 'u')) {
+                setTimeout(onEdit, 0);
+            }
         }
 
         // 格式化日期
