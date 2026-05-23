@@ -5,7 +5,10 @@
       "Bash(git fetch *)",
       "Bash(git commit *)",
       "Bash(git pull *)",
-      "Bash(start *)"
+      "Bash(start *)",
+      "Bash(awk 'NR==3098 {print length\\($0\\), $0}' \"D:\\\\code\\\\other\\\\note\\\\my-notes-main\\\\my-notes-main\\\\index.html\")",
+      "Bash(awk NR>=3078 && NR<=3100 {print NR\": \"$0} *)",
+      "Bash(awk 'NR==3098' \"D:\\\\code\\\\other\\\\note\\\\my-notes-main\\\\my-notes-main\\\\index.html\")"
     ]
   }
 }
