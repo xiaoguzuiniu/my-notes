@@ -5,7 +5,7 @@
       "title": "📝 格式化快捷键说明",
       "category": "未分类",
       "createdAt": "2026-05-23T05:59:40.218Z",
-      "updatedAt": "2026-05-23T06:20:07.952Z",
+      "updatedAt": "2026-05-23T06:20:49.349Z",
       "content": "<h1>快捷键速查</h1>\n<p>在编辑笔记时，可使用工具栏按钮或下面的快捷键来快速格式化文字。</p>\n\n<h2>文字样式</h2>\n<ul>\n  <li><b>加粗</b>：<code>Ctrl + B</code></li>\n  <li><i>斜体</i>：<code>Ctrl + I</code></li>\n  <li><u>下划线</u>：<code>Ctrl + U</code></li>\n  <li><s>删除线</s>：<code>Ctrl + Shift + S</code></li>\n</ul>\n\n<h2>标题</h2>\n<ul>\n  <li>H1：<code>Ctrl + 1</code></li>\n  <li>H2：<code>Ctrl + 2</code></li>\n  <li>H3：<code>Ctrl + 3</code></li>\n  <li>恢复正文：<code>Ctrl + 0</code></li>\n</ul>\n\n<h2>列表</h2>\n<ul>\n  <li>无序列表：<code>Ctrl + Shift + 8</code></li>\n  <li>有序列表：<code>Ctrl + Shift + 7</code></li>\n</ul>\n\n<h2>代码与引用</h2>\n<ul>\n  <li>行内代码：<code>Ctrl + E</code>，效果：<code>console.log('hi')</code></li>\n  <li>代码块：<code>Ctrl + Shift + C</code>，效果：</li>\n</ul>\n<div class=\"code-block\" data-lang=\"java\"><div class=\"code-block-header\" contenteditable=\"false\"><select class=\"code-block-lang\" onchange=\"onCodeLangChange(this)\" onmousedown=\"event.stopPropagation()\"><option value=\"plaintext\" selected=\"\">纯文本</option><option value=\"javascript\">JavaScript</option><option value=\"typescript\">TypeScript</option><option value=\"python\">Python</option><option value=\"java\">Java</option><option value=\"kotlin\">Kotlin</option><option value=\"go\">Go</option><option value=\"rust\">Rust</option><option value=\"c\">C</option><option value=\"cpp\">C++</option><option value=\"csharp\">C#</option><option value=\"swift\">Swift</option><option value=\"php\">PHP</option><option value=\"ruby\">Ruby</option><option value=\"shell\">Shell</option><option value=\"bash\">Bash</option><option value=\"sql\">SQL</option><option value=\"html\">HTML</option><option value=\"css\">CSS</option><option value=\"scss\">SCSS</option><option value=\"xml\">XML</option><option value=\"json\">JSON</option><option value=\"yaml\">YAML</option><option value=\"markdown\">Markdown</option><option value=\"dockerfile\">Dockerfile</option></select><button type=\"button\" class=\"code-block-copy\" onclick=\"copyCodeBlock(this)\">复制</button></div><pre><code class=\"hljs language-java\">function <span class=\"hljs-title function_\">hello</span><span class=\"hljs-params\">()</span> {\n  <span class=\"hljs-keyword\">return</span> <span class=\"hljs-string\">'world'</span>;\n}</code></pre></div>\n<ul>\n  <li>引用：<code>Ctrl + Shift + .</code>，效果：</li>\n</ul>\n<blockquote>这是一段引用文字。</blockquote>\n\n<h2>其它</h2>\n<ul>\n  <li>清除格式：<code>Ctrl + \\</code></li>\n</ul>\n\n<p>提示：Mac 系统下 <code>Ctrl</code> 也可使用 <code>⌘</code>。</p>"
     },
     {
@@ -211,5 +211,5 @@
     "毕设-王春迎",
     "gpt"
   ],
-  "updatedAt": "2026-05-23T06:20:10.956Z"
+  "updatedAt": "2026-05-23T06:20:52.369Z"
 }
