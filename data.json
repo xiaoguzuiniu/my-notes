@@ -19,10 +19,10 @@
     {
       "id": "1779350447388",
       "title": "注册机",
-      "content": "1、开源的 Gopay plus 注册机（非群主版本）：https://github.com/ywnd1144/Gopay_plus_automatic<br>2、群主自研的 GPT free 协议注册机（适用于 Outlook 邮箱）：https://loveq.lanzn.com/i1IEF3pbkdfi<br>需要的自取即可，有心的人自然觉得有用<div><font color=\"#222222\" face=\"SourceSansPro, Arial, sans-serif\"><span style=\"font-size: 16px; font-variant-ligatures: none;\">model_instructions_file = “\"C:\\Users\\15982\\.codex\\agent.md\"”</span></font></div>",
+      "content": "1、开源的 Gopay plus 注册机（非群主版本）：https://github.com/ywnd1144/Gopay_plus_automatic<br>2、群主自研的 GPT free 协议注册机（适用于 Outlook 邮箱）：https://loveq.lanzn.com/i1IEF3pbkdfi<br>需要的自取即可，有心的人自然觉得有用<div><font color=\"#222222\" face=\"SourceSansPro, Arial, sans-serif\"><span style=\"font-size: 16px; font-variant-ligatures: none;\">model_instructions_file = \"C:\\Users\\15982\\.codex\\agent.md\"</span></font></div>",
       "category": "gpt",
       "createdAt": "2026-05-21T08:00:47.389Z",
-      "updatedAt": "2026-05-24T07:46:19.405Z"
+      "updatedAt": "2026-05-24T07:46:23.830Z"
     },
     {
       "id": "1779290910064",
@@ -48,5 +48,5 @@
     "毕设-王春迎",
     "gpt"
   ],
-  "updatedAt": "2026-05-24T07:46:22.413Z"
+  "updatedAt": "2026-05-24T07:46:26.844Z"
 }
