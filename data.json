@@ -79,14 +79,6 @@
       "category": "未分类",
       "createdAt": "2026-05-09T12:09:09.763Z",
       "updatedAt": "2026-05-09T12:09:18.391Z"
-    },
-    {
-      "id": "1778163843522",
-      "title": "",
-      "content": "sudo mkdir -p /etc/docker\nsudo tee /etc/docker/daemon.json <<-'EOF'\n{\n  \"registry-mirrors\": [\n    \"https://docker.1ms.run\",\n    \"https://docker.m.daocloud.io\",\n    \"https://proxy.vvvv.ee\",\n    \"https://dkproxy.linzefeng.top\",\n    \"https://hub.mirrorify.net\"\n  ]\n}\nEOF\n",
-      "category": "未分类",
-      "createdAt": "2026-05-07T14:24:03.522Z",
-      "updatedAt": "2026-05-07T14:28:14.984Z"
     }
   ],
   "categories": [
@@ -96,5 +88,5 @@
     "毕设-王春迎",
     "gpt"
   ],
-  "updatedAt": "2026-05-24T03:34:00.028Z"
+  "updatedAt": "2026-05-24T03:34:02.976Z"
 }
