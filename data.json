@@ -175,14 +175,6 @@
       "category": "毕设-古克文",
       "createdAt": "2026-05-02T10:14:18.986Z",
       "updatedAt": "2026-05-02T16:01:49.927Z"
-    },
-    {
-      "id": "1777714205052",
-      "title": "情感分析流程",
-      "content": "dp-sink 入库成功\n    ↓\n发送 Kafka 消息到 dp-sentiment-trigger-topic\n    ↓\ndp-sentiment 消费消息\n    ↓\n根据评论ID查询并分析\n    ↓\n结果写入 analysis 数据库",
-      "category": "毕设-古克文",
-      "createdAt": "2026-05-02T09:30:05.052Z",
-      "updatedAt": "2026-05-02T15:00:37.969Z"
     }
   ],
   "categories": [
@@ -192,5 +184,5 @@
     "毕设-王春迎",
     "gpt"
   ],
-  "updatedAt": "2026-05-24T03:33:10.038Z"
+  "updatedAt": "2026-05-24T03:33:12.885Z"
 }
