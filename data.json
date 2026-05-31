@@ -3,10 +3,10 @@
     {
       "id": "1780210126930",
       "title": "新增功能",
-      "content": "<h3><span style=\"font-family: inherit;\">2. 社交类</span></h3><div><div>查看该关键词的情感分析情况</div></div><div><h3>3. 电商类</h3></div><div>查看该商品的评价情况</div><div><br></div><div>1. 管理员端：</div><div>查询最近24小时 Kafka 各队列消息积压情况</div><div>查询最近24小时数据吞吐量</div><div>查询最近24小时任务成功率</div><div>创建新用户账号</div><div>2. 业务人员端</div><div>帮我分析一下某某产品最近的竞品分析</div><div>帮我分析一下某某产品最近的舆情分析</div><div>帮我导出竞品分析报告</div><div>帮我导出舆情分析报告</div><div>3.客户端</div><div>帮我创建一个采集任务</div><div>帮我导出原始数据</div><div>帮我导出清洗数据</div><div>帮我看一下最近的采集趋势</div>",
+      "content": "<h3><span style=\"font-family: inherit;\">2. 社交类</span></h3><div><div>查看该关键词的情感分析情况</div></div><div><h3>3. 电商类</h3></div><div>查看该商品的评价情况</div><div><br></div><div>1. 管理员端：</div><div>查询最近24小时 Kafka 各队列消息积压情况</div><div>查询最近24小时数据吞吐量</div><div>查询最近24小时任务成功率</div><div>创建新用户账号</div><div>2. 业务人员端</div><div>帮我分析一下某某产品最近的竞品分析</div><div>帮我分析一下某某产品最近的舆情分析</div><div>帮我导出竞品分析报告</div><div>帮我导出舆情分析报告</div><div>3.客户端</div><div>帮我创建一个采集任务</div><div>帮我导出原始数据</div><div>帮我导出清洗数据</div><div>帮我看一下某某r'w最近的采集趋势</div>",
       "category": "毕设-古克文",
       "createdAt": "2026-05-31T06:48:46.930Z",
-      "updatedAt": "2026-05-31T18:03:18.098Z"
+      "updatedAt": "2026-05-31T18:03:26.541Z"
     },
     {
       "id": "1780202242625",
@@ -88,5 +88,5 @@
     "毕设-王春迎",
     "gpt"
   ],
-  "updatedAt": "2026-05-31T18:03:21.108Z"
+  "updatedAt": "2026-05-31T18:03:26.642Z"
 }
