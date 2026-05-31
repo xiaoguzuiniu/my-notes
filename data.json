@@ -3,10 +3,10 @@
     {
       "id": "1780210126930",
       "title": "新增功能",
-      "content": "<h1>1. 新闻类</h1><span style=\"color: rgb(51, 65, 85); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, &quot;Liberation Mono&quot;, &quot;Courier New&quot;, monospace; font-size: 12.25px; background-color: rgb(241, 245, 249);\">监控特某个新闻，有最新这个新闻的时候就爬取下来清洗整理然后发送到对应邮箱</span><div><h2><font color=\"#334155\" face=\"ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace\"><span style=\"font-size: 12.25px;\">2.&nbsp;</span></font></h2><div><span style=\"color: rgb(51, 65, 85); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, &quot;Liberation Mono&quot;, &quot;Courier New&quot;, monospace; font-size: 12.25px; background-color: rgb(241, 245, 249);\"><br></span></div></div>",
+      "content": "<h1>1. 新闻类</h1><span style=\"color: rgb(51, 65, 85); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, &quot;Liberation Mono&quot;, &quot;Courier New&quot;, monospace; font-size: 12.25px; background-color: rgb(241, 245, 249);\">监控特某个新闻，有最新这个新闻的时候就爬取下来清洗整理然后发送到对应邮箱</span><div><h1><font color=\"#334155\" face=\"ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace\"><span style=\"font-size: 12.25px;\">2. 社交类</span></font></h1><div><span style=\"color: rgb(51, 65, 85); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, &quot;Liberation Mono&quot;, &quot;Courier New&quot;, monospace; font-size: 12.25px; background-color: rgb(241, 245, 249);\"><br></span></div></div>",
       "category": "毕设-古克文",
       "createdAt": "2026-05-31T06:48:46.930Z",
-      "updatedAt": "2026-05-31T06:50:05.309Z"
+      "updatedAt": "2026-05-31T06:50:11.327Z"
     },
     {
       "id": "1780202242625",
@@ -88,5 +88,5 @@
     "毕设-王春迎",
     "gpt"
   ],
-  "updatedAt": "2026-05-31T06:50:05.789Z"
+  "updatedAt": "2026-05-31T06:50:12.276Z"
 }
