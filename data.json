@@ -1,14 +1,6 @@
 {
   "notes": [
     {
-      "id": "1779290910064",
-      "title": "2026.5.21要做的",
-      "content": "1. 方案论证\n2. 系统测试添加测试结果图，主要表格和图片的交叉引用，还有图片的序号\n3.数据分析页面的情感极性分析\n4. 把对话的大模型换成可配置的还有换成小米的模型",
-      "category": "毕设-古克文",
-      "createdAt": "2026-05-20T15:28:30.064Z",
-      "updatedAt": "2026-05-21T05:58:56.439Z"
-    },
-    {
       "id": "1778468385113",
       "title": "chat gpt plus",
       "content": "xiaogukeai+shopping@outlook.com\nxiaogukeai+shoppingcat@outlook.com\nxiaogukeai+shoppingone@outlook.com //要电话\nxiaogukeai+work@outlook.com\nMrsSara455313@outlook.com\nCameronMartinez364974@outlook.com//要电话\n\n\n",
@@ -25,5 +17,5 @@
     "gpt",
     "动漫"
   ],
-  "updatedAt": "2026-07-03T01:46:57.023Z"
+  "updatedAt": "2026-07-03T01:46:59.772Z"
 }
