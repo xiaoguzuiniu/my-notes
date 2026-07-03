@@ -1,14 +1,6 @@
 {
   "notes": [
     {
-      "id": "1779350447388",
-      "title": "注册机",
-      "content": "1、开源的 Gopay plus 注册机（非群主版本）：https://github.com/ywnd1144/Gopay_plus_automatic<br>2、群主自研的 GPT free 协议注册机（适用于 Outlook 邮箱）：https://loveq.lanzn.com/i1IEF3pbkdfi<br>需要的自取即可，有心的人自然觉得有用",
-      "category": "gpt",
-      "createdAt": "2026-05-21T08:00:47.389Z",
-      "updatedAt": "2026-05-24T08:10:04.491Z"
-    },
-    {
       "id": "1779290910064",
       "title": "2026.5.21要做的",
       "content": "1. 方案论证\n2. 系统测试添加测试结果图，主要表格和图片的交叉引用，还有图片的序号\n3.数据分析页面的情感极性分析\n4. 把对话的大模型换成可配置的还有换成小米的模型",
@@ -33,5 +25,5 @@
     "gpt",
     "动漫"
   ],
-  "updatedAt": "2026-07-03T01:46:54.609Z"
+  "updatedAt": "2026-07-03T01:46:57.023Z"
 }
