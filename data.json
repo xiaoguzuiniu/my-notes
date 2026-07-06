@@ -1,6 +1,14 @@
 {
   "notes": [
     {
+      "id": "1783320532362",
+      "title": "",
+      "content": "",
+      "category": "公司笔记",
+      "createdAt": "2026-07-06T06:48:52.362Z",
+      "updatedAt": "2026-07-06T06:48:52.362Z"
+    },
+    {
       "id": "1783318387591",
       "title": "学习路线",
       "content": "<p><strong>学习路线</strong></p><ol start=\"1\"><li>Smart 模组是什么，AP/BP/Modem 是什么</li><li>模组代码和资料从哪里找：Gerrit、GitLab、P4、飞书、网盘</li><li>客户问题来了以后，第一步怎么判断</li><li>怎么抓 log：<code>dmesg</code>、<code>logcat</code>、平台专用 log</li><li>怎么用出厂固件、开发板、回退代码做对比</li><li>怎么查历史经验：Confluence、Jira、Git 提交记录</li><li>Jira 单怎么更新，哪些内容不能乱传</li><li>代码怎么提交：Git/Gerrit、GitLab、P4</li><li>客户支持怎么沟通，什么情况要升级</li><li>把整个流程串成一个真实案例</li></ol>",
@@ -29,5 +37,5 @@
     "未分类",
     "公司笔记"
   ],
-  "updatedAt": "2026-07-06T06:48:47.781Z"
+  "updatedAt": "2026-07-06T06:48:54.367Z"
 }
