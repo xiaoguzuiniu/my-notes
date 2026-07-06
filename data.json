@@ -3,10 +3,10 @@
     {
       "id": "1783326454013",
       "title": "代码怎么提交：Git/Gerrit、GitLab、P4",
-      "content": "<blockquote><br></blockquote><blockquote>Gerrit：内部基线代码<br>GitLab：客户定制代码 / customization 项目<br>P4：部分 BP / 平台特殊代码</blockquote>",
+      "content": "<blockquote><div class=\"code-block\" data-lang=\"plaintext\"><div class=\"code-block-header\" contenteditable=\"false\"><select class=\"code-block-lang\" onchange=\"onCodeLangChange(this)\" onmousedown=\"event.stopPropagation()\"><option value=\"plaintext\" selected=\"\">纯文本</option><option value=\"javascript\">JavaScript</option><option value=\"typescript\">TypeScript</option><option value=\"python\">Python</option><option value=\"java\">Java</option><option value=\"kotlin\">Kotlin</option><option value=\"go\">Go</option><option value=\"rust\">Rust</option><option value=\"c\">C</option><option value=\"cpp\">C++</option><option value=\"csharp\">C#</option><option value=\"swift\">Swift</option><option value=\"php\">PHP</option><option value=\"ruby\">Ruby</option><option value=\"shell\">Shell</option><option value=\"bash\">Bash</option><option value=\"sql\">SQL</option><option value=\"html\">HTML</option><option value=\"css\">CSS</option><option value=\"scss\">SCSS</option><option value=\"xml\">XML</option><option value=\"json\">JSON</option><option value=\"yaml\">YAML</option><option value=\"markdown\">Markdown</option><option value=\"dockerfile\">Dockerfile</option></select><button type=\"button\" class=\"code-block-copy\" onclick=\"copyCodeBlock(this)\">复制</button></div><pre><code>​</code></pre></div><p><br></p><br></blockquote><blockquote>Gerrit：内部基线代码<br>GitLab：客户定制代码 / customization 项目<br>P4：部分 BP / 平台特殊代码</blockquote>",
       "category": "公司笔记",
       "createdAt": "2026-07-06T08:27:34.013Z",
-      "updatedAt": "2026-07-06T08:31:33.323Z"
+      "updatedAt": "2026-07-06T08:31:40.392Z"
     },
     {
       "id": "1783325831575",
@@ -93,5 +93,5 @@
     "未分类",
     "公司笔记"
   ],
-  "updatedAt": "2026-07-06T08:31:33.954Z"
+  "updatedAt": "2026-07-06T08:31:40.612Z"
 }
