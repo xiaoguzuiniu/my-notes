@@ -2,11 +2,11 @@
   "notes": [
     {
       "id": "1783326454013",
-      "title": "",
+      "title": "代码怎么提交：Git/Gerrit、GitLab、P4",
       "content": "<pre><code>Gerrit：内部基线代码\nGitLab：客户定制代码 / customization 项目\nP4：部分 BP / 平台特殊代码</code></pre>",
       "category": "公司笔记",
       "createdAt": "2026-07-06T08:27:34.013Z",
-      "updatedAt": "2026-07-06T08:27:34.611Z"
+      "updatedAt": "2026-07-06T08:27:41.436Z"
     },
     {
       "id": "1783325831575",
@@ -93,5 +93,5 @@
     "未分类",
     "公司笔记"
   ],
-  "updatedAt": "2026-07-06T08:27:38.053Z"
+  "updatedAt": "2026-07-06T08:27:44.619Z"
 }
