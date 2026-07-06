@@ -2,11 +2,11 @@
   "notes": [
     {
       "id": "1783325614997",
-      "title": "",
+      "title": "怎么查历史经验：Confluence、Jira、Git 提交记录？",
       "content": "<p>查历史经验的目标是：</p><blockquote><p>看这个问题以前有没有人遇到过、怎么定位、最后改了哪段代码。</p></blockquote><p>你可以按这个顺序查：</p><pre><code>先 Confluence 查总结文档\n再 Jira 查真实问题单\n最后 Git 查最终代码修改</code></pre><p><strong>1. Confluence：查“经验总结/操作方法”</strong><br>Confluence 更适合查别人整理好的文档，比如：</p><ul><li>某个平台怎么抓 log</li><li>某类问题怎么排查</li><li>某个外设怎么调试</li><li>某个工具怎么用</li><li>某个历史问题的总结</li></ul><p>搜索关键词不要太长，优先用这些组合：</p><pre><code>模块型号 + 现象\n平台名 + 现象\n外设名 + fail/error\nlog 关键字\n功能名 + 调试</code></pre><p>比如：</p><pre><code>SG530C wifi 连接失败\n高通 SIM 不识别\n展锐 YLog\ni2c probe failed\ncamera bringup\nLCD 调试\nmodem crash</code></pre><p>如果你手里有 log，优先拿异常关键字搜：</p><pre><code>probe failed\ntimeout\nPermission denied\ncrash\npanic\nnot found\ninit failed</code></pre><p>Confluence 查到文档后，重点看：</p><pre><code>适用平台\n适用版本\n问题现象是否一致\n需要抓什么 log\n最终结论是什么\n有没有限制条件</code></pre><p><strong>2. Jira：查“真实问题处理过程”</strong><br>Jira 更适合查历史 bug 单。它比 Confluence 更杂，但更接近真实问题。</p><p>你可以查：</p><pre><code>客户报过类似问题吗？\n以前谁处理过？\n当时要了哪些 log？\n最后是客户问题、硬件问题，还是软件 patch？\n有没有关联 commit 或 patch？</code></pre><p>搜索方式可以按：</p><pre><code>问题现象\nlog 关键字\n模组型号\n平台名\n客户名\n功能模块</code></pre><p>比如：</p><pre><code>SIM not detected\n无法注册网络\n开机卡logo\ndmesg i2c timeout\nSG530C camera\nSC200R suspend</code></pre><p>看 Jira 时不要只看标题，要重点看评论区：</p><pre><code>客户最初怎么描述\nFAE 补充了什么信息\n研发怎么分析\n中间抓了哪些 log\n有没有让客户刷出厂包/开发板对比\n最终怎么关闭\n是否提供了 patch</code></pre><p>新人特别要注意：Jira 里的结论有时候是“当时场景下成立”，不要直接套用。要看平台、版本、客户硬件是否一致。</p><p><strong>3. Git 提交记录：查“代码到底改了什么”</strong><br>Git 是最终证据。很多问题 Jira 里说“已修复”，但真正修的是哪段代码，要看 commit。</p><p>你可以从三种线索查 Git：</p><p>第一种，用关键字查提交信息：</p><pre><code>git log --oneline --grep=\"wifi\"\ngit log --oneline --grep=\"SIM\"\ngit log --oneline --grep=\"i2c\"\ngit log --oneline --grep=\"crash\"</code></pre><p>第二种，用文件路径查历史：</p><pre><code>git log --oneline -- path/to/file</code></pre><p>比如你怀疑是某个驱动：</p><pre><code>git log --oneline -- drivers/input/touchscreen/\ngit log --oneline -- drivers/media/</code></pre><p>第三种，用代码关键字查谁改过：</p><pre><code>git log -S \"关键代码或字符串\"\ngit log -G \"正则关键字\"</code></pre><p>比如 log 里有一个函数名或错误字符串：</p><pre><code>git log -S \"probe failed\"\ngit log -S \"sim detect\"</code></pre><p>看某个 commit 具体改动：</p><pre><code>git show &lt;commit_id&gt;</code></pre><p>看两个版本之间改了什么：</p><pre><code>git log --oneline &lt;正常版本&gt;..&lt;异常版本&gt;</code></pre><p><strong>推荐排查顺序</strong><br>假设客户说：升级后 Wi-Fi 连接失败。</p><p>你可以这样查：</p><pre><code>1. Confluence 搜：\n   Wi-Fi 连接失败\n   平台名 + Wi-Fi\n   log 里的 error 关键字\n\n2. Jira 搜：\n   Wi-Fi fail\n   模组型号 + Wi-Fi\n   客户平台 + Wi-Fi\n\n3. Git 搜：\n   git log --grep=\"wifi\"\n   git log -- drivers/net/wireless/\n   git log -S \"log 中的关键字\"</code></pre><p><strong>怎么判断查到的是不是有用</strong><br>你要对比这几个点：</p><pre><code>平台是否一样\n模组是否接近\nAndroid/Linux 版本是否接近\n问题现象是否一致\nlog 关键字是否一致\n复现条件是否一致\n最终修复点是否相关</code></pre><p>只要有 3 个以上一致，就值得继续看。</p><p><strong>新人最好养成这个记录习惯</strong><br>每次你查历史经验，可以在 Jira 或自己的笔记里写：</p><pre><code>已查询：\n1. Confluence：关键词 xxx，找到文档 xxx，结论 xxx\n2. Jira：找到类似单 xxx，现象相似/不相似，原因 xxx\n3. Git：找到 commit xxx，修改点 xxx，待验证是否相关</code></pre><p>这样导师或组长一看就知道你不是“没思路”，而是在系统排查。</p><p><strong>一句话口诀</strong></p><pre><code>Confluence 查方法，Jira 查案例，Git 查代码证据。</code></pre><p>这三者串起来才完整：<br>Confluence 告诉你怎么排查，Jira 告诉你以前怎么处理，Git 告诉你最后到底改了什么。</p>",
       "category": "公司笔记",
       "createdAt": "2026-07-06T08:13:34.997Z",
-      "updatedAt": "2026-07-06T08:13:35.739Z"
+      "updatedAt": "2026-07-06T08:13:46.893Z"
     },
     {
       "id": "1783324195100",
@@ -77,5 +77,5 @@
     "未分类",
     "公司笔记"
   ],
-  "updatedAt": "2026-07-06T08:13:38.748Z"
+  "updatedAt": "2026-07-06T08:13:47.129Z"
 }
