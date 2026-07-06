@@ -2,11 +2,11 @@
   "notes": [
     {
       "id": "1783322052394",
-      "title": "怎么抓 log：dmesg、logcat、平台专用 log",
+      "title": "怎么抓 log：dmesg、logcat、平台专用 log？",
       "content": "",
       "category": "公司笔记",
       "createdAt": "2026-07-06T07:14:12.394Z",
-      "updatedAt": "2026-07-06T07:14:13.182Z"
+      "updatedAt": "2026-07-06T07:14:48.479Z"
     },
     {
       "id": "1783321862784",
@@ -61,5 +61,5 @@
     "未分类",
     "公司笔记"
   ],
-  "updatedAt": "2026-07-06T07:14:16.382Z"
+  "updatedAt": "2026-07-06T07:14:52.367Z"
 }
