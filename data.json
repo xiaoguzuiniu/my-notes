@@ -10,11 +10,11 @@
     },
     {
       "id": "1783043221023",
-      "title": "基线代码分类",
-      "content": "",
+      "title": "笔记",
+      "content": "<li class=\"font-claude-response-body whitespace-normal break-words pl-2\"><strong>烧录 = 刷机</strong>,叫法不同,同一件事</li>\n<li class=\"font-claude-response-body whitespace-normal break-words pl-2\"><strong>fastboot</strong>:依赖 bootloader 正常,日常调试刷分区用,快、简单</li>\n<li class=\"font-claude-response-body whitespace-normal break-words pl-2\"><strong>QFIL + EDL(9008模式)</strong>:芯片 ROM 级别的救砖/首次烧录/量产用的模式,不依赖 bootloader,能刷 fastboot 碰不到的底层分区(如 bootloader 本身)</li>\n<li class=\"font-claude-response-body whitespace-normal break-words pl-2\">判断标准:<strong>能正常开机走 fastboot,开不了机/首次烧录/量产走 QFIL</strong></li>",
       "category": "未分类",
       "createdAt": "2026-07-03T01:47:01.023Z",
-      "updatedAt": "2026-07-03T01:47:32.987Z"
+      "updatedAt": "2026-07-06T03:07:42.938Z"
     }
   ],
   "categories": [
@@ -25,5 +25,5 @@
     "gpt",
     "动漫"
   ],
-  "updatedAt": "2026-07-06T02:32:46.340Z"
+  "updatedAt": "2026-07-06T03:07:43.630Z"
 }
