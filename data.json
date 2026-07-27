@@ -2,11 +2,11 @@
   "notes": [
     {
       "id": "1785130936356",
-      "title": "",
+      "title": "push apk",
       "content": "<p>在 Linux 源码环境中执行：</p><pre><code>adb devices</code></pre><p>确认设备状态是 <code>device</code> 后：</p><pre><code>adb push \\\nUM.9.14/out/target/product/lahaina612/vendor/priv-app/SnapdragonCamera/SnapdragonCamera.apk \\\n/data/local/tmp/SnapdragonCamera.apk</code></pre><p>然后安装：</p><pre><code>adb shell pm install -r -d /data/local/tmp/SnapdragonCamera.apk</code></pre><p>看到下面内容就表示成功：</p><pre><code>Success</code></pre><p>再清理临时 APK 并启动相机：</p><pre><code>adb shell rm /data/local/tmp/SnapdragonCamera.apk\nadb shell am force-stop org.codeaurora.snapcam\nadb shell monkey -p org.codeaurora.snapcam 1</code></pre><p>也可以直接重启设备：</p><pre><code>adb reboot</code></pre><p>实际上还可以省略 <code>adb push</code>，直接安装：</p><pre><code>adb install -r -d \\\nUM.9.14/out/target/product/lahaina612/vendor/priv-app/SnapdragonCamera/SnapdragonCamera.apk</code></pre><p>如果报 <code>INSTALL_FAILED_UPDATE_INCOMPATIBLE</code>，先不要卸载系统相机。这通常是 APK 签名与设备镜像不一致，需要改用同一套签名或以 <code>adb root + adb remount</code> 的方式更新 <code>/vendor/priv-app</code>。</p>",
       "category": "未分类",
       "createdAt": "2026-07-27T05:42:16.356Z",
-      "updatedAt": "2026-07-27T05:42:17.622Z"
+      "updatedAt": "2026-07-27T05:42:23.034Z"
     },
     {
       "id": "1785124346904",
@@ -141,5 +141,5 @@
     "未分类",
     "公司笔记"
   ],
-  "updatedAt": "2026-07-27T05:42:18.381Z"
+  "updatedAt": "2026-07-27T05:42:26.043Z"
 }
