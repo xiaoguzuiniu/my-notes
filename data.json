@@ -1,6 +1,14 @@
 {
   "notes": [
     {
+      "id": "1785130936356",
+      "title": "",
+      "content": "<p>在 Linux 源码环境中执行：</p><pre><code>adb devices</code></pre><p>确认设备状态是 <code>device</code> 后：</p><pre><code>adb push \\\nUM.9.14/out/target/product/lahaina612/vendor/priv-app/SnapdragonCamera/SnapdragonCamera.apk \\\n/data/local/tmp/SnapdragonCamera.apk</code></pre><p>然后安装：</p><pre><code>adb shell pm install -r -d /data/local/tmp/SnapdragonCamera.apk</code></pre><p>看到下面内容就表示成功：</p><pre><code>Success</code></pre><p>再清理临时 APK 并启动相机：</p><pre><code>adb shell rm /data/local/tmp/SnapdragonCamera.apk\nadb shell am force-stop org.codeaurora.snapcam\nadb shell monkey -p org.codeaurora.snapcam 1</code></pre><p>也可以直接重启设备：</p><pre><code>adb reboot</code></pre><p>实际上还可以省略 <code>adb push</code>，直接安装：</p><pre><code>adb install -r -d \\\nUM.9.14/out/target/product/lahaina612/vendor/priv-app/SnapdragonCamera/SnapdragonCamera.apk</code></pre><p>如果报 <code>INSTALL_FAILED_UPDATE_INCOMPATIBLE</code>，先不要卸载系统相机。这通常是 APK 签名与设备镜像不一致，需要改用同一套签名或以 <code>adb root + adb remount</code> 的方式更新 <code>/vendor/priv-app</code>。</p>",
+      "category": "未分类",
+      "createdAt": "2026-07-27T05:42:16.356Z",
+      "updatedAt": "2026-07-27T05:42:17.622Z"
+    },
+    {
       "id": "1785124346904",
       "title": "单编",
       "content": "<p>对，这套命令可以单编 SnapdragonCamera，前提是 <code>target</code> 是完整 Android 源码根目录，里面存在 <code>build/envsetup.sh</code>。</p><pre><code>cd target\nsource build/envsetup.sh\nlunch lahaina612-user\nmmm vendor/codeaurora/packages/apps/SnapdragonCamera</code></pre><p>说明：</p><ul><li><code>source build/envsetup.sh</code>：加载 <code>lunch</code>、<code>mmm</code> 等编译命令。</li><li><code>lunch lahaina612-user</code>：选择对应产品和 <code>user</code> 版本。</li><li><code>mmm vendor/.../SnapdragonCamera</code>：只编译该目录及必要依赖。</li><li>首次最好先完成一次整编，后续修改 Java/XML 后再单编。</li><li>每次新开终端，都要重新执行 <code>source</code> 和 <code>lunch</code>。</li></ul><p>编译完成后，可查找生成的 APK：</p><pre><code>find out/target/product/lahaina612 -name 'SnapdragonCamera.apk'</code></pre><p>也可以带并行参数加快速度：</p><pre><code>mmm vendor/codeaurora/packages/apps/SnapdragonCamera -j8</code></pre><p>如果出现：</p><pre><code>#### build completed successfully ####</code></pre><p>就表示单编成功。注意，单编只生成 APK，不会自动更新到设备中。</p>",
@@ -133,5 +141,5 @@
     "未分类",
     "公司笔记"
   ],
-  "updatedAt": "2026-07-27T03:52:37.765Z"
+  "updatedAt": "2026-07-27T05:42:18.381Z"
 }
