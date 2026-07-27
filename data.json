@@ -2,11 +2,11 @@
   "notes": [
     {
       "id": "1785124346904",
-      "title": "da",
-      "content": "",
+      "title": "单编",
+      "content": "<p>对，这套命令可以单编 SnapdragonCamera，前提是 <code>target</code> 是完整 Android 源码根目录，里面存在 <code>build/envsetup.sh</code>。</p><pre><code>cd target\nsource build/envsetup.sh\nlunch lahaina612-user\nmmm vendor/codeaurora/packages/apps/SnapdragonCamera</code></pre><p>说明：</p><ul><li><code>source build/envsetup.sh</code>：加载 <code>lunch</code>、<code>mmm</code> 等编译命令。</li><li><code>lunch lahaina612-user</code>：选择对应产品和 <code>user</code> 版本。</li><li><code>mmm vendor/.../SnapdragonCamera</code>：只编译该目录及必要依赖。</li><li>首次最好先完成一次整编，后续修改 Java/XML 后再单编。</li><li>每次新开终端，都要重新执行 <code>source</code> 和 <code>lunch</code>。</li></ul><p>编译完成后，可查找生成的 APK：</p><pre><code>find out/target/product/lahaina612 -name 'SnapdragonCamera.apk'</code></pre><p>也可以带并行参数加快速度：</p><pre><code>mmm vendor/codeaurora/packages/apps/SnapdragonCamera -j8</code></pre><p>如果出现：</p><pre><code>#### build completed successfully ####</code></pre><p>就表示单编成功。注意，单编只生成 APK，不会自动更新到设备中。</p>",
       "category": "未分类",
       "createdAt": "2026-07-27T03:52:26.904Z",
-      "updatedAt": "2026-07-27T03:52:28.883Z"
+      "updatedAt": "2026-07-27T03:52:34.089Z"
     },
     {
       "id": "1784707090424",
@@ -133,5 +133,5 @@
     "未分类",
     "公司笔记"
   ],
-  "updatedAt": "2026-07-27T03:52:28.920Z"
+  "updatedAt": "2026-07-27T03:52:34.470Z"
 }
