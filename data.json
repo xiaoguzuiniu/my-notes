@@ -1,6 +1,14 @@
 {
   "notes": [
     {
+      "id": "1786945497408",
+      "title": "",
+      "content": "",
+      "category": "未分类",
+      "createdAt": "2026-08-17T05:44:57.408Z",
+      "updatedAt": "2026-08-17T05:44:57.408Z"
+    },
+    {
       "id": "1786326146741",
       "title": "骁龙相机需求",
       "content": "第一次打开：wm size ph:960*480&nbsp; ov:1920*960&nbsp; 现象：预览界面拉伸<br><div><img src=\"https://raw.githubusercontent.com/xiaoguzuiniu/my-notes/main/uploads/images/paste_1786326342290_levgr6.png\"></div><div><br></div><div>切换分辨率：ov:960*1920 现象：预览画面恢复正常，但是画面是竖屏的，只要竖屏显示，模拟器转不过来，它都是这种竖向的。分辨率如果不是竖向的，他就会拉伸</div><div><img src=\"https://raw.githubusercontent.com/xiaoguzuiniu/my-notes/main/uploads/images/paste_1786326661421_1qnzko.png\"></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div>验证：原版相机，使用下面的参数的时候，预览画面拉伸。</div><div><img src=\"https://raw.githubusercontent.com/xiaoguzuiniu/my-notes/main/uploads/images/paste_1786327331754_hzw6dv.png\"></div><div><br></div><div><img src=\"https://raw.githubusercontent.com/xiaoguzuiniu/my-notes/main/uploads/images/paste_1786327470374_bdeke7.png\"></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><p>主要验证场景包括：</p><ul><li><code dir=\"ltr\">960×480</code> 物理横屏；</li><li><code dir=\"ltr\">1920×960</code> 同比例投屏；</li><li>Photo、ProMode、Video；</li><li>前后摄像头；</li><li><code dir=\"ltr\">4:3</code>、<code dir=\"ltr\">16:9</code>、<code dir=\"ltr\">1:1</code> 等分辨率；</li><li>预览不拉伸、方向正确，拍摄文件尺寸正确。</li></ul></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div><div><br></div>",
@@ -165,5 +173,5 @@
     "未分类",
     "公司笔记"
   ],
-  "updatedAt": "2026-08-10T06:10:12.564Z"
+  "updatedAt": "2026-08-17T05:44:59.439Z"
 }
