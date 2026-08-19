@@ -1,6 +1,14 @@
 {
   "notes": [
     {
+      "id": "1787134451832",
+      "title": "",
+      "content": "客户",
+      "category": "未分类",
+      "createdAt": "2026-08-19T10:14:11.832Z",
+      "updatedAt": "2026-08-19T10:14:13.840Z"
+    },
+    {
       "id": "1786945508834",
       "title": "电话相关移除",
       "content": "<img src=\"https://raw.githubusercontent.com/xiaoguzuiniu/my-notes/main/uploads/images/paste_1786945516942_h97esv.png\">",
@@ -181,5 +189,5 @@
     "未分类",
     "公司笔记"
   ],
-  "updatedAt": "2026-08-17T08:19:28.160Z"
+  "updatedAt": "2026-08-19T10:14:13.861Z"
 }
