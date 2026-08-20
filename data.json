@@ -3,10 +3,10 @@
     {
       "id": "1787134451832",
       "title": "",
-      "content": "客户说他们的apk是没有签名的，按理说是可以安装进去的，他们的意思就是想要统一三个平台的签名一致。<div><br></div><div>G1项目系统签名：&nbsp;</div><div>A15 :&nbsp;573c0be7e43bc5665d9dfc3071fa01273fc0b8535a4e1d4722ccd6092caf1421</div><div>A13:&nbsp;cffd87033e869d12afb733a7909a2a075772e63491477c3daa685ca1e1e335bb</div><div><br></div><div>G2项目系统签名：</div><div>A15:&nbsp;cffd87033e869d12afb733a7909a2a075772e63491477c3daa685ca1e1e335bb（客户发的包）</div><div>A15：&nbsp;SHA-256=526246ef5036575858f208168107f477ee32726f91b3e6595c638ebf672cb787（原始</div>",
+      "content": "客户说他们的apk是没有签名的，按理说是可以安装进去的，他们的意思就是想要统一三个平台的签名一致。<div><br></div><div>G1项目系统签名：&nbsp;</div><div>A15 :&nbsp;573c0be7e43bc5665d9dfc3071fa01273fc0b8535a4e1d4722ccd6092caf1421</div><div>A13:&nbsp;cffd87033e869d12afb733a7909a2a075772e63491477c3daa685ca1e1e335bb</div><div><br></div><div>G2项目系统签名：</div><div>A15:&nbsp;cffd87033e869d12afb733a7909a2a075772e63491477c3daa685ca1e1e335bb（客户发的包）</div><div>A15：&nbsp;SHA-256=526246ef5036575858f208168107f477ee32726f91b3e6595c638ebf672cb787（原始）</div>",
       "category": "未分类",
       "createdAt": "2026-08-19T10:14:11.832Z",
-      "updatedAt": "2026-08-20T02:24:04.166Z"
+      "updatedAt": "2026-08-20T02:24:05.438Z"
     },
     {
       "id": "1786945508834",
@@ -189,5 +189,5 @@
     "未分类",
     "公司笔记"
   ],
-  "updatedAt": "2026-08-20T02:24:04.390Z"
+  "updatedAt": "2026-08-20T02:24:08.455Z"
 }
