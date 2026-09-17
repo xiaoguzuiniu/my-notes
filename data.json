@@ -2,11 +2,11 @@
   "notes": [
     {
       "id": "1789613084939",
-      "title": "c",
-      "content": "",
+      "title": "cts",
+      "content": "<p data-pm-slice=\"0 0 []\">run cts -m CtsSensorPrivacyTestCases -t android.sensorprivacy.cts.SensorPrivacyMicrophoneTest#testCantChangeWhenLocked</p><p data-pm-slice=\"0 0 []\"><br></p><p data-pm-slice=\"0 0 []\">&nbsp; &nbsp; &nbsp;</p>",
       "category": "未分类",
       "createdAt": "2026-09-17T02:44:44.939Z",
-      "updatedAt": "2026-09-17T02:44:46.857Z"
+      "updatedAt": "2026-09-17T02:44:50.416Z"
     },
     {
       "id": "help-shortcuts",
@@ -205,5 +205,5 @@
     "未分类",
     "公司笔记"
   ],
-  "updatedAt": "2026-09-17T02:44:46.956Z"
+  "updatedAt": "2026-09-17T02:44:53.850Z"
 }
